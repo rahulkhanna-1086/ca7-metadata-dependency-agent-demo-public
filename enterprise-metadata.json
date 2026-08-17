@@ -1,0 +1,61 @@
+{
+  "metadataVersion": "2.0",
+  "classification": "SYNTHETIC_TECHNICAL_METADATA_ONLY",
+  "mcpConnectorLayer": {
+    "mode": "READ_ONLY",
+    "toolAllowListEnforced": true,
+    "productionExecutionEnabled": false,
+    "connectors": [
+      {"platform":"ISPW","server":"mcp-ispw-metadata","resources":["applications","components","promotion-paths"],"allowedTools":["search_components","get_component_version","get_promotion_status"],"blockedTools":["promote_component","deploy_component","modify_source"]},
+      {"platform":"BMC Control-M","server":"mcp-controlm-metadata","resources":["folders","jobs","calendars","sla-services"],"allowedTools":["list_jobs","get_dependencies","get_calendar","get_sla_status"],"blockedTools":["run_job","hold_job","update_definition","deploy_schedule"]},
+      {"platform":"MuleSoft","server":"mcp-mulesoft-metadata","resources":["applications","flows","queues","schemas"],"allowedTools":["get_flow_metadata","trace_interface","get_field_mapping","get_queue_contract"],"blockedTools":["deploy_flow","publish_api","read_message_payload"]},
+      {"platform":"NaturalONE","server":"mcp-naturalone-metadata","resources":["libraries","modules","references","adabas-files"],"allowedTools":["search_modules","get_callers","get_callees","get_file_references"],"blockedTools":["edit_module","compile_module","deploy_module","read_adabas_records"]}
+    ]
+  },
+  "schedules": [
+    {"id":"SCH_HOURLY_INGEST","frequency":"HOURLY","description":"Online policy, payment and transaction ingestion"},
+    {"id":"SCH_DAILY_REPORTING","frequency":"DAILY","description":"New business and servicing operational reporting"},
+    {"id":"SCH_DWH_FULL_DUMP","frequency":"DAILY FULL","description":"Mainframe full dump to DWH and cloud"}
+  ],
+  "jobs": [
+    {"id":"ONLINE_POLICY_BOOK","x":1,"y":8,"jcl":"ONLINE_API","program":"POLICY-BOOKING-API","type":"Online system","files":[],"duration":0,"frequency":"REAL-TIME","plannedStart":"08:00"},
+    {"id":"MULE_POLICY_IN","x":11,"y":8,"jcl":"POLICY.EVENTS.IN","program":"MULE-POLICY-FLOW","type":"MuleSoft queue","files":[],"duration":1,"frequency":"REAL-TIME"},
+    {"id":"HOURLY_CAPTURE","x":22,"y":8,"jcl":"JCL_HRLY_CAPTURE","program":"HRLYCAP1","type":"COBOL","files":["F101","F210","F230"],"duration":9,"frequency":"HOURLY"},
+    {"id":"POLICY_CAPTURE","x":34,"y":1,"jcl":"JCL_POL_CAPTURE","program":"NAT_POL_CAPTURE","type":"Natural","files":["F101"],"duration":6,"frequency":"HOURLY"},
+    {"id":"PAYMENT_CAPTURE","x":34,"y":13,"jcl":"JCL_PAY_CAPTURE","program":"PAYCAP01","type":"COBOL","files":["F210"],"duration":7,"frequency":"HOURLY"},
+    {"id":"TXN_CAPTURE","x":34,"y":25,"jcl":"JCL_TXN_CAPTURE","program":"TXNCAP01","type":"COBOL","files":["F230"],"duration":5,"frequency":"HOURLY"},
+    {"id":"PERSON_CAPTURE","x":47,"y":1,"jcl":"JCL_PERSON_CAP","program":"NAT_PERSON_META","type":"Natural","files":["F240"],"duration":4,"frequency":"HOURLY"},
+    {"id":"ALLOC_CAPTURE","x":47,"y":13,"jcl":"JCL_ALLOC_CAP","program":"ALLOCT01","type":"COBOL","files":["F250"],"duration":5,"frequency":"HOURLY"},
+    {"id":"INSTR_CAPTURE","x":47,"y":25,"jcl":"JCL_INSTR_CAP","program":"INSTRC01","type":"COBOL","files":["F260"],"duration":4,"frequency":"HOURLY"},
+    {"id":"CASHIER_POST","x":60,"y":1,"jcl":"JCL_CASH_POST","program":"CSHPOST1","type":"COBOL","files":["F210","F220","F230"],"duration":8,"frequency":"HOURLY"},
+    {"id":"RISK_CALC","x":60,"y":13,"jcl":"JCL_RISK_CALC","program":"RISKCAL1","type":"COBOL","files":["F101","F240","F270"],"duration":11,"frequency":"HOURLY"},
+    {"id":"TAX_CALC","x":60,"y":25,"jcl":"JCL_TAX_CALC","program":"TAXCAL01","type":"COBOL","files":["F210","F230","F280"],"duration":7,"frequency":"HOURLY"},
+    {"id":"HOURLY_RECON","x":73,"y":13,"jcl":"JCL_HRLY_RECON","program":"NAT_HRLY_RECON","type":"Natural","files":["F101","F210","F220","F230","F250","F260","F270","F280"],"duration":10,"frequency":"HOURLY"},
+    {"id":"MULE_ACK_OUT","x":86,"y":13,"jcl":"POLICY.EVENTS.ACK","program":"MULE-ACK-FLOW","type":"MuleSoft queue","files":[],"duration":1,"frequency":"HOURLY","slaDeadline":"09:00"},
+    {"id":"EOD_SNAPSHOT","x":11,"y":60,"jcl":"JCL_EOD_SNAPSHOT","program":"EODSNAP1","type":"COBOL","files":["F101","F210","F220","F230","F250","F260"],"duration":18,"frequency":"EOD","plannedStart":"18:00"},
+    {"id":"NEW_BUSINESS_RPT","x":27,"y":48,"jcl":"JCL_NEWBUS_RPT","program":"NAT_NEWBUS_RPT","type":"Natural","files":["F101"],"duration":12,"frequency":"DAILY"},
+    {"id":"SERVICE_REQ_RPT","x":27,"y":70,"jcl":"JCL_SERVICE_RPT","program":"SERVRPT1","type":"COBOL","files":["F230","F260"],"duration":13,"frequency":"DAILY"},
+    {"id":"BUSINESS_IN_OUT","x":43,"y":59,"jcl":"JCL_BIZ_IN_OUT","program":"BIZIO001","type":"COBOL","files":["F101","F230","F260"],"duration":16,"frequency":"DAILY","slaDeadline":"19:15"},
+    {"id":"DWH_FULL_DUMP","x":43,"y":82,"jcl":"JCL_DWH_FULL","program":"DWHFULL1","type":"COBOL","files":["F101","F210","F220","F230","F240","F250","F260","F270","F280"],"duration":42,"frequency":"DAILY FULL"},
+    {"id":"MULE_DWH_OUT","x":60,"y":82,"jcl":"MAINFRAME.DWH.FULL","program":"MULE-DWH-EXPORT","type":"MuleSoft interface","files":[],"duration":6,"frequency":"DAILY"},
+    {"id":"ENTERPRISE_DWH","x":76,"y":76,"jcl":"DWH_LOAD_PIPELINE","program":"DWH-INGEST","type":"Data Warehouse","files":[],"duration":22,"frequency":"DAILY","slaDeadline":"20:30"},
+    {"id":"CLOUD_PUBLISH","x":76,"y":89,"jcl":"JCL_CLOUD_PUB","program":"CLDPUB01","type":"MuleSoft integration","files":[],"duration":8,"frequency":"DAILY"},
+    {"id":"CLOUD_DATA_LAKE","x":89,"y":89,"jcl":"CLOUD_LANDING","program":"CLOUD-INGEST","type":"Cloud platform","files":[],"duration":12,"frequency":"DAILY","slaDeadline":"21:00"}
+  ],
+  "dependencies": [
+    {"from":"ONLINE_POLICY_BOOK","to":"MULE_POLICY_IN","type":"interface"},{"from":"MULE_POLICY_IN","to":"HOURLY_CAPTURE","type":"interface"},
+    {"from":"HOURLY_CAPTURE","to":"POLICY_CAPTURE","type":"predecessor"},{"from":"HOURLY_CAPTURE","to":"PAYMENT_CAPTURE","type":"predecessor"},{"from":"HOURLY_CAPTURE","to":"TXN_CAPTURE","type":"predecessor"},
+    {"from":"POLICY_CAPTURE","to":"PERSON_CAPTURE","type":"predecessor"},{"from":"PAYMENT_CAPTURE","to":"ALLOC_CAPTURE","type":"predecessor"},{"from":"TXN_CAPTURE","to":"INSTR_CAPTURE","type":"predecessor"},
+    {"from":"PAYMENT_CAPTURE","to":"CASHIER_POST","type":"resource-gate"},{"from":"TXN_CAPTURE","to":"CASHIER_POST","type":"predecessor"},
+    {"from":"POLICY_CAPTURE","to":"RISK_CALC","type":"predecessor"},{"from":"PERSON_CAPTURE","to":"RISK_CALC","type":"predecessor"},
+    {"from":"PAYMENT_CAPTURE","to":"TAX_CALC","type":"predecessor"},{"from":"TXN_CAPTURE","to":"TAX_CALC","type":"predecessor"},
+    {"from":"CASHIER_POST","to":"HOURLY_RECON","type":"predecessor"},{"from":"RISK_CALC","to":"HOURLY_RECON","type":"predecessor"},{"from":"TAX_CALC","to":"HOURLY_RECON","type":"predecessor"},{"from":"ALLOC_CAPTURE","to":"HOURLY_RECON","type":"predecessor"},{"from":"INSTR_CAPTURE","to":"HOURLY_RECON","type":"predecessor"},
+    {"from":"HOURLY_RECON","to":"MULE_ACK_OUT","type":"interface"},{"from":"HOURLY_RECON","to":"EOD_SNAPSHOT","type":"predecessor"},
+    {"from":"EOD_SNAPSHOT","to":"NEW_BUSINESS_RPT","type":"predecessor"},{"from":"EOD_SNAPSHOT","to":"SERVICE_REQ_RPT","type":"predecessor"},
+    {"from":"NEW_BUSINESS_RPT","to":"BUSINESS_IN_OUT","type":"predecessor"},{"from":"SERVICE_REQ_RPT","to":"BUSINESS_IN_OUT","type":"predecessor"},
+    {"from":"EOD_SNAPSHOT","to":"DWH_FULL_DUMP","type":"export"},{"from":"DWH_FULL_DUMP","to":"MULE_DWH_OUT","type":"interface"},{"from":"MULE_DWH_OUT","to":"ENTERPRISE_DWH","type":"export"},{"from":"ENTERPRISE_DWH","to":"CLOUD_PUBLISH","type":"predecessor"},{"from":"CLOUD_PUBLISH","to":"CLOUD_DATA_LAKE","type":"export"}
+  ],
+  "adabasFiles": [
+    {"id":"F101","name":"POLICY"},{"id":"F210","name":"PAYMENTS"},{"id":"F220","name":"CASHIERING"},{"id":"F230","name":"TRANSACTION"},{"id":"F240","name":"PERSONALITY","contentClassification":"SENSITIVE"},{"id":"F250","name":"ALLOCATION"},{"id":"F260","name":"INSTRUCTION"},{"id":"F270","name":"SUMS_AT_RISK"},{"id":"F280","name":"TAX"}
+  ]
+}

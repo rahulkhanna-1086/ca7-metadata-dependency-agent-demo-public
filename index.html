@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CA7 Metadata Intelligence Demo</title>
+  <style>
+    :root{--bg:#070b12;--card:#0c131d;--line:#1d2a3a;--text:#ecf3f9;--muted:#8191a4;--cyan:#43d5e8;--green:#55dc9a;--red:#ff716d;--amber:#f0aa45}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;overflow-y:auto}body{margin:0;min-height:100vh;overflow-y:auto;background:var(--bg);color:var(--text);font:13px Arial,sans-serif}button,input{font:inherit}
+    header{height:64px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid var(--line);background:#090e16}
+    .logo{width:32px;height:32px;display:grid;place-items:center;margin-right:11px;border:1px solid #38768a;border-radius:7px;color:var(--cyan);font-weight:800}
+    .brand b{display:block}.brand small,.muted{color:var(--muted)}.boundary{margin:auto;font-size:10px;letter-spacing:.08em;color:#a2b0bf}.boundary strong{margin-left:10px;padding:5px 8px;border:1px solid #285d42;border-radius:4px;background:#0d281d;color:#7ce6b3}
+    .avatar{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#172640;color:#c2d7f7;font-size:10px}
+    .intro{padding:20px 24px 14px;background:linear-gradient(90deg,#0b141f,#08101a);border-bottom:1px solid var(--line)}
+    .intro h1{margin:4px 0 7px;font-size:22px}.intro p{margin:0;color:#96a5b5;max-width:760px;line-height:1.5}.kicker{color:#65778b;font-size:9px;letter-spacing:.13em;font-weight:700}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:17px}
+    .step{position:relative;z-index:2;display:flex;align-items:center;gap:11px;padding:11px;border:1px solid var(--line);border-radius:7px;background:#0a111a;color:#8b9bad;cursor:pointer;text-align:left;pointer-events:auto}.step:hover{border-color:#3d7188;background:#0d1924}.step:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+    .step span{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:#152231;color:#7d91a8;font-weight:bold}
+    .step b{display:block;color:#c3cfda;font-size:11px}.step small{font-size:9px}.step.active{border-color:#2d7d8e;background:#0d1b25}.step.active span{background:#1b5361;color:#b9f3f7}.step.done span{background:#153c2d;color:var(--green)}
+    .workspace{display:grid;grid-template-columns:minmax(620px,1fr) 410px;min-height:650px;align-items:start}
+    .main{padding:20px 24px;min-width:0}.side{position:sticky;top:0;height:100vh;border-left:1px solid var(--line);background:#091019;display:flex;flex-direction:column;overflow:hidden}
+    .sectionHead{display:flex;justify-content:space-between;align-items:end;margin-bottom:12px}.sectionHead h2{margin:4px 0 0;font-size:17px}.badge{padding:6px 8px;border:1px solid #275841;border-radius:4px;background:#0d251b;color:#65dda1;font-size:9px}
+    .sourceGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+    .source{padding:12px;border:1px solid var(--line);border-radius:7px;background:var(--card);cursor:pointer}.source:hover,.source.selected{border-color:#3a758d}.sourceTop{display:flex;justify-content:space-between}.source b{font-size:11px}.source em{font-style:normal;font-size:8px;padding:3px 5px;border-radius:3px;background:#142538;color:#9ec5e7}.source p{margin:8px 0 0;color:#7d8ea1;font:9px/1.5 monospace}.artifact{display:inline-block;margin:6px 4px 0 0;padding:4px 6px;border:1px solid #27445d;border-radius:4px;background:#101d2b;color:#9dc8ea;font:8px monospace;cursor:pointer}.artifact:hover{border-color:var(--cyan);color:#d1f7fb}
+    .source.danger em{background:#32191b;color:#ff918d}.source.danger{border-color:#3b2428}
+    .mcpLayer{margin:12px 0;padding:12px;border:1px solid #57417d;border-radius:8px;background:linear-gradient(135deg,#0c1420,#151024)}.mcpHead{display:flex;justify-content:space-between;align-items:center;gap:10px}.mcpHead h3{margin:3px 0;font-size:12px}.mcpHead p{margin:0;color:#817995;font-size:8px}.mcpStatus{padding:5px 8px;border:1px solid #4c3a6d;border-radius:12px;color:#b997ef;font-size:8px}.mcpFlow{display:grid;grid-template-columns:150px 34px 1fr 34px 170px;align-items:stretch;gap:6px;margin-top:10px}.mcpBox{display:flex;flex-direction:column;justify-content:center;padding:9px;border:1px solid #2c4356;border-radius:6px;background:#09131d}.mcpBox strong{color:#d5e3ed;font-size:9px}.mcpBox small{margin-top:4px;color:#71889a;font-size:7px;line-height:1.45}.mcpBox.gateway{border-color:#7657a5;background:#151025}.mcpArrow{display:grid;place-items:center;color:#9b78d1;font-size:17px}.mcpConnectors{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.mcpConnector{padding:8px;border:1px solid #29465a;border-radius:5px;background:#091722;cursor:pointer;color:#9eb8ca;text-align:left}.mcpConnector:hover,.mcpConnector.active{border-color:#aa7ee8;background:#181127}.mcpConnector b{display:block;color:#d4c1ef;font-size:8px}.mcpConnector span{display:block;margin-top:3px;color:#60d79b;font-size:7px}.mcpConnector em{display:block;margin-top:5px;color:#6e8294;font:7px/1.4 monospace}.mcpDetail{margin-top:8px;padding:9px;border-left:2px solid #9b70d2;background:#0b111b;color:#879bab;font-size:8px;line-height:1.5}.mcpDetail strong{color:#d4c1ef}.mcpBlocked{color:#ff918d}.mcpAllowed{color:#64d99d}@media(max-width:1100px){.mcpFlow{grid-template-columns:1fr}.mcpArrow{transform:rotate(90deg)}.mcpConnectors{grid-template-columns:repeat(2,1fr)}}
+    .loadRow{display:flex;align-items:center;padding:11px;border:1px solid #24445a;border-radius:7px;background:#0a1722;margin-bottom:13px}.loadRow p{margin:0;color:#8ea1b3;font-size:10px;line-height:1.45}.primary{margin-left:auto;border:0;border-radius:5px;padding:9px 12px;background:#2d7889;color:white;cursor:pointer}.primary:hover{background:#378ca0}
+    .controlDeck{display:grid;grid-template-columns:.8fr 1.5fr;gap:10px;margin:12px 0}.controlCard{padding:11px;border:1px solid var(--line);border-radius:7px;background:#0a121b}.controlCard h3{display:flex;justify-content:space-between;align-items:center;margin:0 0 8px;font-size:10px}.controlCard h3 span{color:var(--green);font-size:8px}.controlRow{display:flex;gap:6px;flex-wrap:wrap}.controlRow select,.controlRow input{min-width:0;padding:7px;border:1px solid #263b4e;border-radius:4px;background:#071019;color:#c7d5e1;font-size:9px}.controlRow select{flex:1}.controlRow input{width:70px}.controlRow button{padding:7px 9px;border:1px solid #31536a;border-radius:4px;background:#102333;color:#acd7e8;font-size:8px;cursor:pointer}.controlRow button.dangerBtn{border-color:#6b3738;background:#281619;color:#ff9a96}.controlRow button.resetBtn{border-color:#4c4129;background:#211b11;color:#d6ba83}.simResult{margin-top:8px;padding:8px;border-left:2px solid var(--cyan);background:#091722;color:#839caf;font-size:8px;line-height:1.5}.simResult strong{color:#c5d8e5}.slaStrip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}.slaMetric{padding:7px;background:#071019;border:1px solid #1a3041;border-radius:4px}.slaMetric span{display:block;color:#698296;font-size:7px}.slaMetric b{display:block;margin-top:3px;color:#c5d8e5;font-size:11px}.slaMetric.breach{border-color:#6b3738}.slaMetric.breach b{color:var(--red)}.slaTable{margin-top:8px;max-height:150px;overflow:auto;border:1px solid #1a3041}.slaRow{display:grid;grid-template-columns:1.5fr repeat(4,.7fr);gap:6px;padding:6px;border-bottom:1px solid #142637;font:8px monospace;color:#86a1b4}.slaRow.header{position:sticky;top:0;background:#0d1b27;color:#5f8198}.slaRow.late{background:#251518;color:#ff9a96}.slaRecommendation{margin-top:8px;padding:8px;border:1px dashed #4c4129;background:#17150f;color:#cfb985;font-size:8px;line-height:1.45}.slaRecommendation b{color:var(--amber)}.node.failed{border-color:var(--red)!important;background:#281418!important;box-shadow:0 0 18px #ff716d45!important}.node.delayed{border-color:var(--amber)!important;background:#251e12!important}.node.blocked{border-color:#8d5060!important;background:#1c1319!important;opacity:.72}.node.slaBreach{box-shadow:0 0 0 2px var(--red),0 0 18px #ff716d55!important}.node .state{display:block;margin-top:3px;font:7px monospace;color:var(--red)}.edge.impacted{stroke:var(--red);stroke-width:3}.edge.delayedEdge{stroke:var(--amber);stroke-width:3}
+    .graph{height:570px;position:relative;overflow:auto;border:1px solid var(--line);border-radius:8px;background-color:#080e16;background-image:linear-gradient(#101a28 1px,transparent 1px),linear-gradient(90deg,#101a28 1px,transparent 1px);background-size:32px 32px}.graphInner{position:relative;width:1900px;height:540px}.edges{position:absolute;inset:0;width:1900px;height:540px;z-index:1;pointer-events:none;overflow:visible}.edge{stroke:#36516b;stroke-width:2;fill:none;stroke-linejoin:round;stroke-linecap:square;vector-effect:non-scaling-stroke}.edge.resource{stroke:#b18442;stroke-dasharray:8 7}.edge.interface{stroke:#8b62c8;stroke-dasharray:4 5}.edge.export{stroke:#32a47a}.edge.active{stroke:var(--cyan);stroke-width:3;filter:drop-shadow(0 0 3px var(--cyan))}.edgeLabel{fill:#71869b;font:9px Arial}
+    .laneLabel{position:absolute;z-index:0;padding:5px 8px;border:1px solid #1b3142;border-radius:4px;background:#09131d;color:#60788c;font-size:8px;letter-spacing:.09em}.laneLabel.hourly{left:10px;top:8px}.laneLabel.daily{left:10px;top:300px}.laneLabel.external{right:20px;top:8px;color:#9a7bd0;border-color:#3a2c55}
+    .node{position:absolute;z-index:2;min-width:112px;padding:8px;border:1px solid #2a3b50;border-radius:6px;background:#0d151f;color:white;text-align:left;cursor:pointer;transition:.15s}.node:hover,.node.selected{z-index:4;border-color:var(--cyan);box-shadow:0 0 18px #43d5e82b;transform:translateY(-2px)}.node b{display:block;font:8px monospace}.node small{color:#6f8194;font-size:7px}.node i{float:left;margin-right:7px;color:var(--amber)}.node .io{display:block;margin-top:4px;color:#7892a7;font:6px monospace}
+    .tooltip{position:fixed;z-index:30;display:none;width:275px;padding:12px;border:1px solid #38728a;border-radius:7px;background:#0b1621;box-shadow:0 18px 50px #000;pointer-events:none}.tooltip b{display:block;color:#e6f4fb;font:11px monospace;margin-bottom:7px}.tooltipGrid{display:grid;grid-template-columns:75px 1fr;gap:5px;color:#91a3b5;font-size:8px}.tooltipGrid strong{color:#658097;font-weight:normal}.tooltipHint{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);color:var(--cyan);font-size:8px}
+    .selectedDetail{margin:10px 0;padding:11px;border:1px solid #2c5067;border-radius:7px;background:#0b1823}.selectedDetail h3{margin:0 0 8px;font:11px monospace;color:#d8edf7}.detailGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.detailGrid div{padding:7px;border:1px solid #1c3041;border-radius:4px;background:#08111a}.detailGrid span{display:block;color:#607589;font-size:7px}.detailGrid b{display:block;margin-top:3px;color:#a9c7dc;font:8px monospace}
+    .transformFlow{display:grid;grid-template-columns:1fr 32px 1fr;align-items:center;gap:7px;margin-top:10px}.transformSide{padding:9px;border:1px solid #273f53;border-radius:5px;background:#08121c}.transformSide.out{border-color:#3b3158;background:#110e1d}.transformSide span{display:block;color:#677d91;font-size:7px}.transformSide b{display:block;margin:4px 0;color:#b6d0df;font:9px monospace}.transformSide code{color:#7f9fb5;font-size:7px}.transformArrow{text-align:center;color:#a67bdd;font-size:18px}.mappingList{margin-top:8px;border:1px solid #203448;border-radius:5px;overflow:hidden}.mappingList div{display:grid;grid-template-columns:1fr 28px 1fr;padding:6px 8px;border-bottom:1px solid #172735;color:#8ea5b7;font:7px monospace}.mappingList div:last-child{border:0}.mappingList i{text-align:center;color:#a67bdd;font-style:normal}.transformRule{margin-top:8px;padding:7px;border-left:2px solid #9568d0;background:#130f20;color:#9d8bb5;font-size:8px}
+    .askBox{display:flex;align-items:center;margin-top:12px;padding:10px;border:1px solid #2b5264;border-radius:8px;background:#0b1620}.askBox label{flex:1}.askBox small{display:block;color:#6d8094;font-size:8px;letter-spacing:.08em}.askBox input{width:100%;margin-top:4px;border:0;outline:0;background:transparent;color:white}.askBox button{border:0;border-radius:5px;padding:10px 13px;background:#2d7889;color:white;cursor:pointer}
+    .examples{display:flex;gap:6px;margin-top:7px;overflow:auto}.examples button{white-space:nowrap;padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:#0a1119;color:#8293a6;font-size:8px;cursor:pointer}
+    .tabs{height:48px;display:flex;border-bottom:1px solid var(--line);padding:0 16px}.tabs button{flex:1;border:0;background:transparent;color:#75869a;font-size:9px;cursor:pointer}.tabs button.active{color:var(--cyan);border-bottom:2px solid var(--cyan)}
+    .panel{padding:18px;overflow-y:auto;flex:1;min-height:0}.panel h2{margin:6px 0 8px;font-size:20px}.panelText{color:#95a4b5;font-size:10px;line-height:1.6}
+    .notice{padding:10px;border:1px solid #2a684a;border-radius:6px;background:#0d251b;color:#71dda7;font-size:10px;margin:12px 0}.notice.red{border-color:#633333;background:#2a1518;color:#ff918d}
+    table{width:100%;border-collapse:collapse;font-size:9px}th{text-align:left;padding:7px;color:#687a8e;border-bottom:1px solid var(--line)}td{padding:8px 7px;border-bottom:1px solid #162230;font-family:monospace}.allow{color:var(--green)}.deny{color:var(--red)}.dim{text-decoration:line-through;color:#627183}
+    .payload{margin-top:12px;padding:11px;border:1px solid var(--line);border-radius:6px;background:#060c12;color:#91b9dd;font:8px/1.6 monospace;white-space:pre-wrap;max-height:230px;overflow:auto}
+    .answerStatus{display:flex;justify-content:space-between;color:var(--cyan);font-size:9px}.answerStatus span{color:var(--green)}.evidence{border:1px solid var(--line);border-radius:6px;background:var(--card);margin-top:11px;overflow:hidden}.evidence h3{margin:0;padding:9px;border-bottom:1px solid var(--line);font-size:9px}.evidence div{display:grid;grid-template-columns:24px 1fr auto;padding:8px;border-bottom:1px solid #15202d;font-size:8px}.evidence div:last-child{border:0}.evidence code{color:#b7c9da}.evidence em{color:#65778b;font-style:normal}
+    .sideAsk{padding:12px;margin-bottom:12px;border:1px solid #2b5264;border-radius:7px;background:#0b1721}.sideAsk label{display:block;color:#7b8da1;font-size:8px;letter-spacing:.08em}.sideAskRow{display:flex;gap:7px;margin-top:6px}.sideAsk input{min-width:0;flex:1;padding:9px;border:1px solid #22364a;border-radius:5px;background:#071019;color:white;outline:0}.sideAsk input:focus{border-color:var(--cyan)}.sideAsk button{border:0;border-radius:5px;padding:9px 11px;background:#2d7889;color:white;cursor:pointer}.sideExamples{display:flex;gap:5px;margin-top:7px;overflow:auto}.sideExamples button{white-space:nowrap;padding:5px 6px;border:1px solid var(--line);border-radius:4px;background:#0a1119;color:#8293a6;font-size:7px;cursor:pointer}
+    .human{display:flex;gap:9px;padding:10px;margin-top:12px;border:1px solid #4d3b20;border-radius:6px;background:#211b11}.human b{font-size:9px}.human p{margin:3px 0 0;color:#9a8769;font-size:8px}
+    .review{width:100%;margin-top:10px;padding:10px;border:1px solid #286071;border-radius:5px;background:#153543;color:#aeedf3;cursor:pointer}
+    .reviewRecord{margin-top:10px;padding:10px;border:1px solid #28523e;border-radius:6px;background:#0d2119;font-size:9px;color:#92b7a4}.reviewRecord b{display:block;color:#67dfa3;margin-bottom:5px}.reviewRecord p{margin:4px 0;color:#91a49a;line-height:1.45}
+    .modalBack{position:fixed;inset:0;z-index:20;display:none;place-items:center;padding:20px;background:#020509d9;backdrop-filter:blur(5px)}.modalCard{width:540px;max-width:100%;padding:22px;border:1px solid #2a495d;border-radius:10px;background:#0c151f;box-shadow:0 30px 90px #000}.modalCard h2{margin:6px 0}.modalCard>p{color:#8fa0b2;font-size:10px;line-height:1.55}.reviewForm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.reviewForm label{display:flex;flex-direction:column;gap:6px;color:#8193a6;font-size:8px;letter-spacing:.06em}.reviewForm input,.reviewForm select,.reviewForm textarea{padding:9px;border:1px solid #26394c;border-radius:5px;background:#071019;color:#dbe7f1;outline:0}.reviewForm textarea{height:95px;resize:vertical;font:10px/1.5 Arial,sans-serif}.reviewForm .wide{grid-column:1/-1}.reviewForm input:focus,.reviewForm select:focus,.reviewForm textarea:focus{border-color:var(--cyan)}.reviewForm input.unauthorized{border-color:var(--red);background:#231317}.formNote{grid-column:1/-1;padding:9px;border:1px solid #4b3b21;border-radius:5px;background:#211b11;color:#a89370;font-size:8px}.authNote{grid-column:1/-1;display:flex;justify-content:space-between;padding:9px;border:1px solid #28543f;border-radius:5px;background:#0d2219;color:#7edfac;font-size:8px}.authNote strong{color:#b6f1d0}.authError{grid-column:1/-1;display:none;padding:10px;border:1px solid #71383a;border-radius:5px;background:#2a1518;color:#ff918d;font-size:9px}.modalActions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.modalActions button{padding:9px 12px;border:1px solid #2a3c4d;border-radius:5px;background:#101a25;color:#b8c7d5;cursor:pointer}.modalActions .save{border-color:#377b64;background:#1a5945;color:white}
+    .empty{padding:35px 20px;text-align:center;color:#738498}.empty b{display:block;color:#bdc9d4;margin:8px}.hidden{display:none!important}
+    .toast{position:fixed;right:20px;bottom:20px;padding:12px 15px;border:1px solid #326a50;border-radius:6px;background:#10271d;color:#82e5b3;box-shadow:0 15px 40px #000;display:none}
+    @media(max-width:900px){.workspace{grid-template-columns:1fr}.side{position:relative;top:auto;height:auto;max-height:none;border-left:0;border-top:1px solid var(--line);overflow:visible}.panel{overflow:visible}.steps,.controlDeck{grid-template-columns:1fr}.sourceGrid{grid-template-columns:1fr}.boundary{display:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">M</div><div class="brand"><b>Mainframe Intelligence</b><small>CA7 metadata-only analysis POC</small></div>
+    <div class="boundary">DATA BOUNDARY ACTIVE <strong>METADATA ONLY</strong></div><div class="avatar">RK</div>
+  </header>
+
+  <section class="intro">
+    <span class="kicker">GUIDED DEMO</span>
+    <h1>See exactly how AI helps without seeing mainframe business data</h1>
+    <p>Follow the three steps below. The demo starts with realistic technical samples, applies the safety gateway, and answers questions only from the sanitized dependency metadata.</p>
+    <div class="steps">
+      <button class="step active" id="step1" onclick="goStep(1)"><span>1</span><div><b>Load sample sources</b><small>CA7, JCL and Natural metadata</small></div></button>
+      <button type="button" class="step" id="step2" onclick="goStep(2)" aria-label="Open and apply the safety gateway"><span>2</span><div><b>Apply safety gateway</b><small>Click to inspect allowed and blocked fields</small></div></button>
+      <button class="step" id="step3" onclick="goStep(3)"><span>3</span><div><b>Ask and investigate</b><small>Evidence-based AI answers</small></div></button>
+    </div>
+  </section>
+
+  <main class="workspace">
+    <section class="main">
+      <div class="sectionHead"><div><span class="kicker">INPUT SAMPLE</span><h2 id="mainTitle">Choose the technical sources for this analysis</h2></div><span class="badge" id="scopeBadge">SYNTHETIC NON-PROD</span></div>
+
+      <div id="sourceArea">
+        <div class="sourceGrid">
+          <div class="source selected"><div class="sourceTop"><b>CA7 schedule definitions</b><em>ALLOWED</em></div><p>23 JOBS / 30 LINKS<br>HOURLY + EOD + FULL-DUMP CYCLES<br>MULESOFT QUEUE &amp; EXPORT GATES</p><button class="artifact" onclick="inspectArtifact('CA7','SCH_HOURLY_INGEST','ONLINE_BOOKING -> MULE_INGRESS -> HOURLY_CAPTURE')">SCH_HOURLY_INGEST</button><button class="artifact" onclick="inspectArtifact('CA7','SCH_DAILY_REPORTING','BUSINESS_IN_OUT -> DWH_FULL_DUMP -> CLOUD_PUBLISH')">SCH_DAILY_REPORTING</button></div>
+          <div class="source selected"><div class="sourceTop"><b>JCL structure inventory</b><em>ALLOWED</em></div><p>19 MEMBERS / 47 STEPS<br>PROGRAM, DD AND QUEUE NAMES<br>NO DATASET OR MESSAGE CONTENT</p><button class="artifact" onclick="inspectArtifact('JCL','JCL_HRLY_CAPTURE','PGM=HRLYCAP1 | QUEUE=POLICY.EVENTS.IN')">JCL_HRLY_CAPTURE</button><button class="artifact" onclick="inspectArtifact('JCL','JCL_DWH_FULL','PGM=DWHFULL1 | DD=EXPORTCTL')">JCL_DWH_FULL</button><button class="artifact" onclick="inspectArtifact('JCL','JCL_CLOUD_PUB','PGM=CLDPUB01 | QUEUE=DWH.CLOUD.OUT')">JCL_CLOUD_PUB</button></div>
+          <div class="source selected"><div class="sourceTop"><b>Natural module inventory</b><em>ALLOWED</em></div><p>9 PROGRAMS / 6 SUBPROGRAMS<br>CALL GRAPH + DATA AREAS<br>TECHNICAL FILE IDS</p><button class="artifact" onclick="inspectArtifact('NATURAL','NAT_CLM_RECON','CALLS=NSP_CLM_RULES | LDA=LDA_CLAIM_BATCH | FILES=F152,F118')">NAT_CLM_RECON</button><button class="artifact" onclick="inspectArtifact('NATURAL','NAT_FIN_SUMMARY','CALLS=NSP_FIN_BALANCE | FILES=F152,F217,F144')">NAT_FIN_SUMMARY</button><button class="artifact" onclick="inspectArtifact('NATURAL','NSP_POLICY_RULES','CALLED_BY=NAT_POLICY_LOAD,NAT_CLM_RECON | FILE=F118')">NSP_POLICY_RULES</button></div>
+          <div class="source selected"><div class="sourceTop"><b>COBOL module inventory</b><em>ALLOWED</em></div><p>6 PROGRAMS / 12 COPYBOOKS<br>CALL + JCL RELATIONSHIPS<br>TECHNICAL FILE IDS</p><button class="artifact" onclick="inspectArtifact('COBOL','POLRNEW1','JCL=JCL_POL_RENEW | CALLS=POLRATE2 | FILES=F101,F118')">POLRNEW1</button><button class="artifact" onclick="inspectArtifact('COBOL','CLMVALD2','JCL=JCL_CLM_VALIDATE | COPY=CLMREC01 | FILE=F152')">CLMVALD2</button><button class="artifact" onclick="inspectArtifact('COBOL','BILSYNC2','JCL=JCL_BILLING_SYNC | FILE=F144')">BILSYNC2</button></div>
+          <div class="source selected"><div class="sourceTop"><b>ADABAS technical catalog</b><em>ALLOWED</em></div><p>12 FILE IDS / DESCRIPTORS<br>ACCESS MODES + JOB/MODULE LINKS<br>NO RECORD VALUES</p><button class="artifact" onclick="inspectArtifact('ADABAS','F101 POLICY','JOBS=POLICY_CAPTURE,POLICY_VALIDATE')">F101 Policy</button><button class="artifact" onclick="inspectArtifact('ADABAS','F210 PAYMENTS','JOB=PAYMENT_CAPTURE | MODULE=PAYCAP01')">F210 Payments</button><button class="artifact" onclick="inspectArtifact('ADABAS','F220 CASHIERING','JOB=CASHIER_POST | MODULE=CSHPOST1')">F220 Cashiering</button><button class="artifact" onclick="inspectArtifact('ADABAS','F230 TRANSACTION','JOB=TXN_CAPTURE | MODULE=TXNCAP01')">F230 Transaction</button><button class="artifact" onclick="inspectArtifact('ADABAS','F240 PERSONALITY','JOB=PERSON_CAPTURE | CONTENT=SENSITIVE/BLOCKED')">F240 Personality</button><button class="artifact" onclick="inspectArtifact('ADABAS','F250 ALLOCATION','JOB=ALLOC_CAPTURE | MODULE=ALLOCT01')">F250 Allocation</button><button class="artifact" onclick="inspectArtifact('ADABAS','F260 INSTRUCTION','JOB=INSTR_CAPTURE | MODULE=INSTRC01')">F260 Instruction</button><button class="artifact" onclick="inspectArtifact('ADABAS','F270 SUMS_AT_RISK','JOB=RISK_CALC | MODULE=RISKCAL1')">F270 Sums-at-Risk</button><button class="artifact" onclick="inspectArtifact('ADABAS','F280 TAX','JOB=TAX_CALC | MODULE=TAXCAL01')">F280 Tax</button></div>
+          <div class="source selected"><div class="sourceTop"><b>MuleSoft transformations</b><em>ALLOWED</em></div><p>DATA-IN / DATA-OUT CONTRACTS<br>FIELD MAPPING + FORMAT CONVERSION<br>QUEUE, DWH AND CLOUD TARGETS</p><button class="artifact" onclick="inspectMuleTransform('MULE_POLICY_IN')">Online to mainframe</button><button class="artifact" onclick="inspectMuleTransform('MULE_ACK_OUT')">Mainframe acknowledgement</button><button class="artifact" onclick="inspectMuleTransform('MULE_DWH_OUT')">Mainframe to DWH</button><button class="artifact" onclick="inspectMuleTransform('CLOUD_PUBLISH')">DWH to cloud</button></div>
+          <div class="source danger"><div class="sourceTop"><b>Business record classification</b><em>CLASSIFY</em></div><p>CONTRACT_NO=CN-2026-01882 (NON-SENSITIVE)<br>POLICY_NO=PL-882103 (NON-SENSITIVE)<br>ID_NO / PASSPORT / PHONE / EMAIL<br>QUALIFICATION / MEDICAL / SMOKER (SENSITIVE)</p><button class="artifact" onclick="inspectArtifact('CLASSIFICATION','Contract and policy numbers','NON-SENSITIVE business identifiers; excluded because dependency analysis does not need them')">Non-sensitive IDs</button><button class="artifact" onclick="inspectArtifact('CLASSIFICATION','Personal and medical attributes','SENSITIVE; blocked before the AI boundary')">Sensitive fields</button></div>
+        </div>
+        <div class="loadRow"><p><b>What happens next?</b><br>The gateway scans 86 technical objects across hourly processing, reporting and MuleSoft integrations before anything crosses into the approved AI environment.</p><button class="primary" onclick="runGateway()">Load enterprise sample</button></div>
+      </div>
+
+      <section class="mcpLayer" aria-label="Enterprise MCP connector layer">
+        <div class="mcpHead"><div><span class="kicker">STANDARDIZED CONNECTOR LAYER</span><h3>Enterprise MCP Tool Gateway</h3><p>One governed metadata interface across enterprise engineering platforms</p></div><span class="mcpStatus" id="mcpStatus">READ-ONLY · 4 CONNECTORS</span></div>
+        <div class="mcpFlow"><div class="mcpBox"><strong>Enterprise platforms</strong><small>Platform credentials remain inside customer-controlled connector runtimes.</small></div><div class="mcpArrow">→</div><div class="mcpConnectors"><button class="mcpConnector" onclick="inspectMcp('ISPW',this)"><b>ISPW MCP SERVER</b><span>HEALTHY</span><em>components · versions<br>promotion status</em></button><button class="mcpConnector" onclick="inspectMcp('CONTROL_M',this)"><b>CONTROL-M MCP SERVER</b><span>HEALTHY</span><em>jobs · calendars<br>dependencies · SLA</em></button><button class="mcpConnector" onclick="inspectMcp('MULESOFT',this)"><b>MULESOFT MCP SERVER</b><span>HEALTHY</span><em>flows · queues<br>schemas · mappings</em></button><button class="mcpConnector" onclick="inspectMcp('NATURALONE',this)"><b>NATURALONE MCP SERVER</b><span>HEALTHY</span><em>libraries · modules<br>references · files</em></button></div><div class="mcpArrow">→</div><div class="mcpBox gateway"><strong>Safety Gateway + Graph</strong><small>Allow-list, schema validation, audit trail and deterministic analysis.</small></div></div>
+        <div class="mcpDetail" id="mcpDetail"><strong>Select a connector</strong> to inspect its MCP resources, permitted tools, sample metadata output and blocked production operations.</div>
+      </section>
+
+      <div class="controlDeck">
+        <section class="controlCard"><h3>JSON METADATA SOURCE <span id="metadataStatus">LOADING...</span></h3><div class="controlRow"><button onclick="loadDefaultMetadata()">Reload enterprise-metadata.json</button><button onclick="metadataFile.click()">Load another JSON</button><input class="hidden" id="metadataFile" type="file" accept="application/json" onchange="loadUploadedMetadata(event)"></div><div class="simResult" id="metadataSummary">The graph, simulator and question engine use one metadata source.</div></section>
+        <section class="controlCard"><h3>TIME-AWARE SLA SIMULATOR <span id="simulationStatus">BASELINE</span></h3><div class="controlRow"><select id="simJob" aria-label="Select job"></select><select id="simType" aria-label="Select simulation type"><option value="DELAY">Delay job start</option><option value="FAILURE">Fail job</option></select><input id="delayMinutes" type="number" min="1" max="240" value="30" aria-label="Delay minutes"><button class="dangerBtn" onclick="applySimulation()">Calculate impact</button><button class="resetBtn" onclick="resetSimulation()">Reset</button></div><div class="simResult" id="simulationResult"><strong>Baseline:</strong> planned times and SLA slack calculated from technical metadata.</div><div class="slaStrip"><div class="slaMetric"><span>SCENARIO FINISH</span><b id="scenarioFinish">--:--</b></div><div class="slaMetric"><span>SLA OUTCOMES</span><b id="slaOutcomes">0</b></div><div class="slaMetric" id="breachMetric"><span>SLA BREACHES</span><b id="slaBreaches">0</b></div><div class="slaMetric"><span>MINIMUM SLACK</span><b id="minimumSlack">--</b></div></div><div class="slaTable" id="slaTable" aria-label="SLA timing results"></div><div class="slaRecommendation" id="slaRecommendation"><b>HUMAN CONTROL:</b> Simulator recommendations are advisory. No CA7 hold, rerun, schedule or deployment action is performed.</div></section>
+      </div>
+
+      <div class="graph" id="graph"><div class="graphInner" id="graphInner"></div></div>
+      <div class="selectedDetail" id="selectedDetail"><h3>Select or hover over a job block</h3><p class="panelText">Directional arrows flow from predecessor to successor. Click any block to inspect its JCL, program modules, ADABAS files, incoming predecessors and outgoing successors.</p></div>
+      <div class="askBox"><label><small>ASK A QUESTION USING THE SANITIZED METADATA</small><input id="ask" value="Trace an online policy booking through hourly mainframe processing" onkeydown="if(event.key==='Enter') analyze()"></label><button onclick="analyze()">Analyze</button></div>
+      <div class="examples"><button onclick="askExample(0)">Trace online policy booking</button><button onclick="askExample(1)">What runs hourly?</button><button onclick="askExample(2)">What uses payment and cashiering files?</button><button onclick="askExample(4)">Trace full dump to DWH and cloud</button><button onclick="askExample(5)">How is daily business in/out calculated?</button><button onclick="askExample(3)">Show personality record data</button></div>
+    </section>
+
+    <aside class="side">
+      <div class="tabs"><button id="gatewayTab" class="active" onclick="tab('gateway')">1. SAFETY GATEWAY</button><button id="answerTab" onclick="tab('answer')">2. AI ANSWER</button></div>
+      <section class="panel" id="gatewayPanel">
+        <span class="kicker">FIELD-LEVEL DECISION</span><h2>What crosses the AI boundary?</h2>
+        <p class="panelText">This table makes the control visible. Technical identifiers are kept. Business and customer values are removed before the AI request is created.</p>
+        <div class="notice" id="policyNotice">Ready to scan the sample sources.</div>
+        <table><thead><tr><th>Input field</th><th>Example value</th><th>Decision</th></tr></thead><tbody id="fieldRows">
+          <tr><td>CA7 job name</td><td>CLM_VALIDATE</td><td class="allow">ALLOW</td></tr>
+          <tr><td>Dependency</td><td>CLM_VALIDATE -> ADB_F152</td><td class="allow">ALLOW</td></tr>
+          <tr><td>JCL member</td><td>JCL_CLM_VALIDATE</td><td class="allow">ALLOW</td></tr>
+          <tr><td>Natural program</td><td>NAT_CLM_RECON</td><td class="allow">ALLOW</td></tr>
+          <tr><td>ADABAS file IDs</td><td>F101,F210...F280</td><td class="allow">ALLOW</td></tr>
+          <tr><td>MuleSoft queue</td><td>POLICY.EVENTS.IN</td><td class="allow">ALLOW</td></tr>
+          <tr><td>Transformation mapping</td><td>eventType -> EVENT-TYPE</td><td class="allow">ALLOW</td></tr>
+          <tr><td>Format conversion</td><td>JSON -> MQ canonical</td><td class="allow">ALLOW</td></tr>
+          <tr><td>Interface target</td><td>DWH / CLOUD_LAKE</td><td class="allow">ALLOW</td></tr>
+          <tr><td>Schedule frequency</td><td>HOURLY / EOD</td><td class="allow">ALLOW</td></tr>
+          <tr><td>COBOL module</td><td>POLRNEW1</td><td class="allow">ALLOW</td></tr>
+          <tr><td>Contract number</td><td>CN-2026-01882</td><td style="color:var(--amber)">EXCLUDE*</td></tr>
+          <tr><td>Policy number</td><td>PL-882103</td><td style="color:var(--amber)">EXCLUDE*</td></tr>
+          <tr><td>ID / passport number</td><td class="dim">800101... / A123...</td><td class="deny">BLOCK</td></tr>
+          <tr><td>Phone / email ID</td><td class="dim">+27... / user@...</td><td class="deny">BLOCK</td></tr>
+          <tr><td>Qualification</td><td class="dim">Graduate</td><td class="deny">BLOCK</td></tr>
+          <tr><td>Medical data</td><td class="dim">Diagnosis / treatment</td><td class="deny">BLOCK</td></tr>
+          <tr><td>Smoker status</td><td class="dim">Smoker / non-smoker</td><td class="deny">BLOCK</td></tr>
+        </tbody></table>
+        <p class="panelText">* Contract and policy numbers are non-sensitive business identifiers, but are excluded because dependency analysis does not require them.</p>
+        <div class="payload" id="payload">Click "Load enterprise sample" to create the sanitized AI payload.</div>
+      </section>
+
+      <section class="panel hidden" id="answerPanel">
+        <div class="sideAsk">
+          <label>ASK THE AI ABOUT THE SANITIZED METADATA</label>
+          <div class="sideAskRow"><input id="answerAsk" value="Trace an online policy booking through hourly mainframe processing" onkeydown="if(event.key==='Enter') analyzeFromPanel()" aria-label="Ask the AI a question"><button onclick="analyzeFromPanel()">Ask</button></div>
+          <div class="sideExamples"><button onclick="panelExample(0)">Policy booking</button><button onclick="panelExample(1)">Hourly jobs</button><button onclick="panelExample(2)">Payments</button><button onclick="panelExample(4)">DWH + cloud</button><button onclick="panelExample(5)">Business report</button><button onclick="panelExample(3)">Sensitive test</button></div>
+        </div>
+        <div id="answerEmpty" class="empty"><div style="font-size:24px">?</div><b>No question analyzed yet</b>Complete the safety scan, then choose a sample question or type your own.</div>
+        <div id="answerContent" class="hidden">
+          <div class="answerStatus">AI ANALYSIS COMPLETE <span>METADATA EVIDENCE ONLY</span></div>
+          <h2 id="answerTitle"></h2><p class="panelText" id="answerText"></p>
+          <div class="evidence"><h3>Evidence from the sanitized metadata graph</h3><div id="evidenceRows"></div></div>
+          <div class="human"><span>!</span><div><b>Recommendation only - human control remains</b><p>The AI cannot restart, release, modify or deploy a CA7 job.</p></div></div>
+          <button class="review" onclick="recordReview()">Record human review</button>
+        </div>
+      </section>
+    </aside>
+  </main>
+  <div class="toast" id="toast">Human review recorded. No production action was performed.</div>
+  <div class="tooltip" id="jobTooltip"></div>
+  <div class="modalBack" id="reviewModal" role="presentation" onclick="if(event.target===this)closeReview()">
+    <section class="modalCard" role="dialog" aria-modal="true" aria-labelledby="reviewHeading">
+      <span class="kicker">HUMAN CONTROL GATE</span>
+      <h2 id="reviewHeading">Record analyst review</h2>
+      <p>Capture the reviewer decision and rationale. This creates a demo audit record only; it cannot release, restart, modify, or deploy a CA7 job.</p>
+      <div class="reviewForm">
+        <label>REVIEWER NAME<input id="reviewerName" value="Rahul Khanna" oninput="validateReviewer(false)"></label>
+        <label>DECISION<select id="reviewDecision"><option>Approve recommendation</option><option>Request more evidence</option><option>Return for changes</option><option>Reject recommendation</option></select></label>
+        <div class="authNote"><span>AUTHORIZED REVIEWER FOR THIS POC</span><strong>Rahul Khanna</strong></div>
+        <div class="authError" id="authError"><b>UNAUTHORIZED REVIEWER</b><br>Only Rahul Khanna is permitted to record or update the human review for this POC.</div>
+        <label class="wide">REVIEW COMMENTS<textarea id="reviewComment" placeholder="Explain the decision, checks completed, or additional evidence required.">Dependency evidence reviewed. Confirm CA7 job status and the F152 resource gate with Operations before any controlled action.</textarea></label>
+        <label class="wide">OPERATIONS REFERENCE (OPTIONAL)<input id="reviewReference" placeholder="Example: CHG-2026-0142 or INC-2026-0788"></label>
+        <div class="formNote">Human review is mandatory. Recording this decision does not execute a production operation.</div>
+      </div>
+      <div class="modalActions"><button onclick="closeReview()">Cancel</button><button class="save" onclick="saveReview()">Save review record</button></div>
+    </section>
+  </div>
+
+  <script>
+    let jobs=[
+      {id:"ONLINE_POLICY_BOOK",x:1,y:8,jcl:"ONLINE_API",program:"POLICY-BOOKING-API",type:"Online system",files:"No ADABAS access",mins:0,frequency:"REAL-TIME"},
+      {id:"MULE_POLICY_IN",x:11,y:8,jcl:"POLICY.EVENTS.IN",program:"MULE-POLICY-FLOW",type:"MuleSoft queue",files:"Message metadata only",mins:1,frequency:"REAL-TIME"},
+      {id:"HOURLY_CAPTURE",x:22,y:8,jcl:"JCL_HRLY_CAPTURE",program:"HRLYCAP1",type:"COBOL",files:"F101,F210,F230",mins:9,frequency:"HOURLY"},
+      {id:"POLICY_CAPTURE",x:34,y:1,jcl:"JCL_POL_CAPTURE",program:"NAT_POL_CAPTURE",type:"Natural",files:"F101 POLICY",mins:6,frequency:"HOURLY"},
+      {id:"PAYMENT_CAPTURE",x:34,y:13,jcl:"JCL_PAY_CAPTURE",program:"PAYCAP01",type:"COBOL",files:"F210 PAYMENTS",mins:7,frequency:"HOURLY"},
+      {id:"TXN_CAPTURE",x:34,y:25,jcl:"JCL_TXN_CAPTURE",program:"TXNCAP01",type:"COBOL",files:"F230 TRANSACTION",mins:5,frequency:"HOURLY"},
+      {id:"PERSON_CAPTURE",x:47,y:1,jcl:"JCL_PERSON_CAP",program:"NAT_PERSON_META",type:"Natural",files:"F240 PERSONALITY",mins:4,frequency:"HOURLY"},
+      {id:"ALLOC_CAPTURE",x:47,y:13,jcl:"JCL_ALLOC_CAP",program:"ALLOCT01",type:"COBOL",files:"F250 ALLOCATION",mins:5,frequency:"HOURLY"},
+      {id:"INSTR_CAPTURE",x:47,y:25,jcl:"JCL_INSTR_CAP",program:"INSTRC01",type:"COBOL",files:"F260 INSTRUCTION",mins:4,frequency:"HOURLY"},
+      {id:"CASHIER_POST",x:60,y:1,jcl:"JCL_CASH_POST",program:"CSHPOST1",type:"COBOL",files:"F210,F220 CASHIERING,F230",mins:8,frequency:"HOURLY"},
+      {id:"RISK_CALC",x:60,y:13,jcl:"JCL_RISK_CALC",program:"RISKCAL1",type:"COBOL",files:"F101,F240,F270 SUMS_AT_RISK",mins:11,frequency:"HOURLY"},
+      {id:"TAX_CALC",x:60,y:25,jcl:"JCL_TAX_CALC",program:"TAXCAL01",type:"COBOL",files:"F210,F230,F280 TAX",mins:7,frequency:"HOURLY"},
+      {id:"HOURLY_RECON",x:73,y:13,jcl:"JCL_HRLY_RECON",program:"NAT_HRLY_RECON",type:"Natural",files:"F101,F210,F220,F230,F250,F260,F270,F280",mins:10,frequency:"HOURLY"},
+      {id:"MULE_ACK_OUT",x:86,y:13,jcl:"POLICY.EVENTS.ACK",program:"MULE-ACK-FLOW",type:"MuleSoft queue",files:"Status metadata only",mins:1,frequency:"HOURLY"},
+      {id:"EOD_SNAPSHOT",x:11,y:60,jcl:"JCL_EOD_SNAPSHOT",program:"EODSNAP1",type:"COBOL",files:"F101,F210,F220,F230,F250,F260",mins:18,frequency:"EOD"},
+      {id:"NEW_BUSINESS_RPT",x:27,y:48,jcl:"JCL_NEWBUS_RPT",program:"NAT_NEWBUS_RPT",type:"Natural",files:"F101 POLICY",mins:12,frequency:"DAILY"},
+      {id:"SERVICE_REQ_RPT",x:27,y:70,jcl:"JCL_SERVICE_RPT",program:"SERVRPT1",type:"COBOL",files:"F230 TRANSACTION,F260 INSTRUCTION",mins:13,frequency:"DAILY"},
+      {id:"BUSINESS_IN_OUT",x:43,y:59,jcl:"JCL_BIZ_IN_OUT",program:"BIZIO001",type:"COBOL",files:"F101,F230,F260",mins:16,frequency:"DAILY"},
+      {id:"DWH_FULL_DUMP",x:43,y:82,jcl:"JCL_DWH_FULL",program:"DWHFULL1",type:"COBOL",files:"F101,F210,F220,F230,F240,F250,F260,F270,F280",mins:42,frequency:"DAILY FULL"},
+      {id:"MULE_DWH_OUT",x:60,y:82,jcl:"MAINFRAME.DWH.FULL",program:"MULE-DWH-EXPORT",type:"MuleSoft interface",files:"Dataset metadata + manifest",mins:6,frequency:"DAILY"},
+      {id:"ENTERPRISE_DWH",x:76,y:76,jcl:"DWH_LOAD_PIPELINE",program:"DWH-INGEST",type:"Data Warehouse",files:"Landing schema metadata",mins:22,frequency:"DAILY"},
+      {id:"CLOUD_PUBLISH",x:76,y:89,jcl:"JCL_CLOUD_PUB",program:"CLDPUB01",type:"MuleSoft integration",files:"DWH.CLOUD.OUT",mins:8,frequency:"DAILY"},
+      {id:"CLOUD_DATA_LAKE",x:89,y:89,jcl:"CLOUD_LANDING",program:"CLOUD-INGEST",type:"Cloud platform",files:"Object manifest metadata",mins:12,frequency:"DAILY"}
+    ];
+    const muleTransforms={
+      MULE_POLICY_IN:{title:"Online policy booking -> Mainframe hourly input",direction:"INBOUND",source:"Online Policy API",sourceFormat:"JSON / REST",target:"POLICY.EVENTS.IN -> HRLYCAP1",targetFormat:"Canonical MQ message / fixed mainframe fields",sampleIn:'{eventType, policyNumber, paymentRef, transactionType, allocationCode, instructionType, eventTime}',sampleOut:'{EVENT-TYPE, POLICY-NO, PAYMENT-REF, TXN-TYPE, ALLOC-CODE, INSTR-TYPE, EVENT-TS}',maps:[["eventType","EVENT-TYPE"],["policyNumber","POLICY-NO"],["paymentRef","PAYMENT-REF"],["transactionType","TXN-TYPE"],["allocationCode","ALLOC-CODE"],["instructionType","INSTR-TYPE"],["eventTime","EVENT-TS"]],rules:"Validate required fields; normalize dates; map API enums to mainframe codes; create correlation ID; route invalid messages to POLICY.EVENTS.ERROR."},
+      MULE_ACK_OUT:{title:"Mainframe reconciliation -> Online acknowledgement",direction:"OUTBOUND",source:"NAT_HRLY_RECON",sourceFormat:"Mainframe status structure",target:"POLICY.EVENTS.ACK -> Online system",targetFormat:"JSON acknowledgement",sampleIn:'{CORRELATION-ID, RETURN-CODE, PROCESS-STATUS, ERROR-CODE, COMPLETE-TS}',sampleOut:'{correlationId, status, statusMessage, processedAt, retryable}',maps:[["CORRELATION-ID","correlationId"],["PROCESS-STATUS","status"],["ERROR-CODE","statusMessage"],["COMPLETE-TS","processedAt"],["RETURN-CODE","retryable"]],rules:"Translate return codes; suppress internal diagnostics; map technical errors to approved external status; preserve correlation ID."},
+      MULE_DWH_OUT:{title:"Mainframe full dump -> Enterprise DWH",direction:"OUTBOUND",source:"DWHFULL1 / MAINFRAME.DWH.FULL",sourceFormat:"EBCDIC fixed-width files + control manifest",target:"Enterprise DWH landing zone",targetFormat:"UTF-8 delimited partitions + load manifest",sampleIn:'{DATASET-NAME, FILE-ID, RECORD-COUNT, EXTRACT-TS, CHECKSUM, LAYOUT-VERSION}',sampleOut:'{objectName, domain, rowCount, extractTimestamp, checksum, schemaVersion, partitionDate}',maps:[["DATASET-NAME","objectName"],["FILE-ID","domain"],["RECORD-COUNT","rowCount"],["EXTRACT-TS","extractTimestamp"],["LAYOUT-VERSION","schemaVersion"],["CHECKSUM","checksum"]],rules:"Convert EBCDIC to UTF-8; validate counts/checksum; partition by business date; publish manifest only after all files pass controls."},
+      CLOUD_PUBLISH:{title:"Enterprise DWH -> Cloud data lake",direction:"OUTBOUND",source:"DWH canonical export",sourceFormat:"DWH tables / batch manifest",target:"DWH.CLOUD.OUT -> Cloud data lake",targetFormat:"Parquet objects + cloud catalog event",sampleIn:'{tableName, partitionDate, rowCount, schemaVersion, objectUri, checksum}',sampleOut:'{cloudObject, dataDomain, partition, recordCount, schemaId, integrityHash, loadStatus}',maps:[["tableName","dataDomain"],["objectUri","cloudObject"],["partitionDate","partition"],["rowCount","recordCount"],["schemaVersion","schemaId"],["checksum","integrityHash"]],rules:"Map DWH names to cloud domains; create object metadata; preserve lineage; publish catalog event only after cloud checksum validation."}
+    };
+    const mcpConnectors={
+      ISPW:{name:"ISPW",server:"mcp-ispw-metadata",resources:["ispw://applications","ispw://components/{name}","ispw://promotion-paths"],tools:["search_components","get_component_version","get_promotion_status"],sample:{component:"PAYCAP01",application:"POLICY",version:"V42",stage:"QA"},blocked:["promote_component","deploy_component","modify_source"]},
+      CONTROL_M:{name:"BMC Control-M",server:"mcp-controlm-metadata",resources:["controlm://folders","controlm://jobs/{id}","controlm://calendars","controlm://sla-services"],tools:["list_jobs","get_dependencies","get_calendar","get_sla_status"],sample:{job:"PAYMENT_CAPTURE",folder:"HOURLY_POLICY",calendar:"BUSINESS_DAYS",sla:"MULE_ACK_OUT@09:00"},blocked:["run_job","hold_job","update_definition","deploy_schedule"]},
+      MULESOFT:{name:"MuleSoft",server:"mcp-mulesoft-metadata",resources:["mulesoft://applications","mulesoft://flows/{name}","mulesoft://queues","mulesoft://schemas"],tools:["get_flow_metadata","trace_interface","get_field_mapping","get_queue_contract"],sample:{flow:"MULE_POLICY_IN",input:"JSON/REST",output:"Canonical MQ",queue:"POLICY.EVENTS.IN"},blocked:["deploy_flow","publish_api","read_message_payload"]},
+      NATURALONE:{name:"NaturalONE",server:"mcp-naturalone-metadata",resources:["naturalone://libraries","naturalone://modules/{name}","naturalone://references","naturalone://adabas-files"],tools:["search_modules","get_callers","get_callees","get_file_references"],sample:{module:"NAT_POL_CAPTURE",library:"POLICY",calls:[],files:["F101"]},blocked:["edit_module","compile_module","deploy_module","read_adabas_records"]}
+    };
+    let dependencies=[
+      ["ONLINE_POLICY_BOOK","MULE_POLICY_IN","interface"],["MULE_POLICY_IN","HOURLY_CAPTURE","interface"],
+      ["HOURLY_CAPTURE","POLICY_CAPTURE","predecessor"],["HOURLY_CAPTURE","PAYMENT_CAPTURE","predecessor"],["HOURLY_CAPTURE","TXN_CAPTURE","predecessor"],
+      ["POLICY_CAPTURE","PERSON_CAPTURE","predecessor"],["PAYMENT_CAPTURE","ALLOC_CAPTURE","predecessor"],["TXN_CAPTURE","INSTR_CAPTURE","predecessor"],
+      ["PAYMENT_CAPTURE","CASHIER_POST","resource gate"],["TXN_CAPTURE","CASHIER_POST","predecessor"],
+      ["POLICY_CAPTURE","RISK_CALC","predecessor"],["PERSON_CAPTURE","RISK_CALC","predecessor"],
+      ["PAYMENT_CAPTURE","TAX_CALC","predecessor"],["TXN_CAPTURE","TAX_CALC","predecessor"],
+      ["CASHIER_POST","HOURLY_RECON","predecessor"],["RISK_CALC","HOURLY_RECON","predecessor"],["TAX_CALC","HOURLY_RECON","predecessor"],["ALLOC_CAPTURE","HOURLY_RECON","predecessor"],["INSTR_CAPTURE","HOURLY_RECON","predecessor"],
+      ["HOURLY_RECON","MULE_ACK_OUT","interface"],["HOURLY_RECON","EOD_SNAPSHOT","predecessor"],
+      ["EOD_SNAPSHOT","NEW_BUSINESS_RPT","predecessor"],["EOD_SNAPSHOT","SERVICE_REQ_RPT","predecessor"],
+      ["NEW_BUSINESS_RPT","BUSINESS_IN_OUT","predecessor"],["SERVICE_REQ_RPT","BUSINESS_IN_OUT","predecessor"],
+      ["EOD_SNAPSHOT","DWH_FULL_DUMP","export"],["DWH_FULL_DUMP","MULE_DWH_OUT","interface"],["MULE_DWH_OUT","ENTERPRISE_DWH","export"],["ENTERPRISE_DWH","CLOUD_PUBLISH","predecessor"],["CLOUD_PUBLISH","CLOUD_DATA_LAKE","export"]
+    ];
+    const fallbackTiming={ONLINE_POLICY_BOOK:{plannedStart:"08:00"},MULE_ACK_OUT:{slaDeadline:"09:00"},EOD_SNAPSHOT:{plannedStart:"18:00"},BUSINESS_IN_OUT:{slaDeadline:"19:15"},ENTERPRISE_DWH:{slaDeadline:"20:30"},CLOUD_DATA_LAKE:{slaDeadline:"21:00"}};
+    let gatewayRun=false,byId={},timingResults={baseline:{},scenario:{}},metadataModel={adabasFiles:[
+      {id:"F101",name:"POLICY"},{id:"F210",name:"PAYMENTS"},{id:"F220",name:"CASHIERING"},{id:"F230",name:"TRANSACTION"},{id:"F240",name:"PERSONALITY",contentClassification:"SENSITIVE"},{id:"F250",name:"ALLOCATION"},{id:"F260",name:"INSTRUCTION"},{id:"F270",name:"SUMS_AT_RISK"},{id:"F280",name:"TAX"}
+    ]},simulation={type:null,jobId:null,delay:0,affected:[]};
+    jobs=jobs.map(j=>({...j,...(fallbackTiming[j.id]||{})}));
+    function renderGraph(){
+    graphInner.innerHTML="";
+    byId=Object.fromEntries(jobs.map(j=>[j.id,j]));
+    jobs.forEach(j=>{j.predecessors=dependencies.filter(d=>d[1]===j.id).map(d=>d[0]);j.successors=dependencies.filter(d=>d[0]===j.id).map(d=>d[1])});
+    graphInner.insertAdjacentHTML("beforeend",'<span class="laneLabel hourly">HOURLY ONLINE INGESTION</span><span class="laneLabel daily">DAILY REPORTING &amp; EXPORT</span><span class="laneLabel external">MULESOFT / DWH / CLOUD</span>');
+    const graphWidth=1900,graphHeight=540,svgNS="http://www.w3.org/2000/svg",svg=document.createElementNS(svgNS,"svg");svg.setAttribute("class","edges");svg.setAttribute("viewBox","0 0 "+graphWidth+" "+graphHeight);
+    const defs=document.createElementNS(svgNS,"defs");defs.innerHTML='<marker id="arrow" markerUnits="userSpaceOnUse" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#4d718d"/></marker><marker id="arrowActive" markerUnits="userSpaceOnUse" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#43d5e8"/></marker>';svg.appendChild(defs);
+    dependencies.forEach((d,index)=>{
+      const a=byId[d[0]],b=byId[d[1]],path=document.createElementNS(svgNS,"path");
+      const startX=(a.x/100)*graphWidth+112,startY=(a.y/100)*graphHeight+28,endX=(b.x/100)*graphWidth-5,endY=(b.y/100)*graphHeight+28;
+      const laneOffset=((index%3)-1)*8,midX=Math.round((startX+endX)/2)+laneOffset;
+      path.setAttribute("d","M "+startX+" "+startY+" H "+midX+" V "+endY+" H "+endX);
+      path.setAttribute("class","edge "+(d[2]==="resource gate"?"resource":d[2]==="interface"?"interface":d[2]==="export"?"export":""));path.setAttribute("marker-end","url(#arrow)");path.dataset.from=d[0];path.dataset.to=d[1];svg.appendChild(path);
+    });
+    graphInner.appendChild(svg);
+    jobs.forEach((j,i)=>{
+      const n=document.createElement("button");n.className="node";n.style.left=j.x+"%";n.style.top=j.y+"%";
+      const external=j.type.includes("MuleSoft")||j.type.includes("Online")||j.type.includes("Cloud")||j.type.includes("Warehouse");
+      n.innerHTML="<i>"+(external?"◆":"●")+"</i><b>"+j.id+"</b><small>"+j.jcl+" | "+j.frequency+"</small><span class='io'>IN "+j.predecessors.length+" | OUT "+j.successors.length+"</span>";
+      n.dataset.jobId=j.id;n.onclick=()=>inspectJob(j,n);n.onmouseenter=e=>showTooltip(j,e);n.onmousemove=moveTooltip;n.onmouseleave=hideTooltip;graphInner.appendChild(n);
+    });
+    simJob.innerHTML=jobs.filter(j=>!j.type.includes("Online")&&!j.type.includes("Cloud")&&!j.type.includes("Warehouse")).map(j=>"<option value='"+j.id+"'>"+j.id+"</option>").join("");
+    calculateAndRenderTiming();applySimulationStyles();
+    }
+    renderGraph();
+    function showTooltip(j,e){const transform=muleTransforms[j.id];jobTooltip.innerHTML="<b>"+j.id+"</b><div class='tooltipGrid'><strong>JCL / Queue</strong><span>"+j.jcl+"</span><strong>Program</strong><span>"+j.program+"</span><strong>Platform</strong><span>"+j.type+"</span><strong>Files / Target</strong><span>"+j.files+"</span><strong>Frequency</strong><span>"+j.frequency+"</span><strong>Predecessors</strong><span>"+(j.predecessors.join(", ")||"None")+"</span><strong>Successors</strong><span>"+(j.successors.join(", ")||"None")+"</span>"+(transform?"<strong>Transform</strong><span>"+transform.sourceFormat+" -> "+transform.targetFormat+"</span>":"")+"</div><div class='tooltipHint'>Click to pin "+(transform?"the data-in/data-out transformation":"these details and highlight the flow")+"</div>";jobTooltip.style.display="block";moveTooltip(e);highlightFlow(j.id)}
+    function moveTooltip(e){jobTooltip.style.left=Math.min(e.clientX+14,window.innerWidth-295)+"px";jobTooltip.style.top=Math.min(e.clientY+14,window.innerHeight-250)+"px"}
+    function hideTooltip(){jobTooltip.style.display="none";if(!document.querySelector(".node.selected"))clearFlow()}
+    function highlightFlow(id){document.querySelectorAll(".edge").forEach(x=>{const active=x.dataset.from===id||x.dataset.to===id;x.classList.toggle("active",active);x.setAttribute("marker-end",active?"url(#arrowActive)":"url(#arrow)")})}
+    function clearFlow(){document.querySelectorAll(".edge").forEach(x=>{x.classList.remove("active");x.setAttribute("marker-end","url(#arrow)")})}
+    function inspectJob(j,n){
+      document.querySelectorAll(".node").forEach(x=>x.classList.remove("selected"));n.classList.add("selected");highlightFlow(j.id);
+      const timing=timingResults.scenario[j.id]||{};selectedDetail.innerHTML="<h3>"+j.id+"</h3><div class='detailGrid'><div><span>JCL / QUEUE / TARGET</span><b>"+j.jcl+"</b></div><div><span>PROGRAM / FLOW</span><b>"+j.program+"</b></div><div><span>PLATFORM</span><b>"+j.type+"</b></div><div><span>FILES / INTERFACE</span><b>"+j.files+"</b></div><div><span>FREQUENCY</span><b>"+j.frequency+"</b></div><div><span>DURATION</span><b>"+j.mins+" minutes</b></div><div><span>SCENARIO START / FINISH</span><b>"+formatTime(timing.start)+" / "+formatTime(timing.finish)+"</b></div><div><span>SLA / SLACK</span><b>"+(timing.sla===null?"Not declared":formatTime(timing.sla)+" / "+(timing.blocked?"BLOCKED":(timing.slack>=0?"+":"")+timing.slack+" min"))+"</b></div><div><span>PREDECESSORS (IN)</span><b>"+(j.predecessors.join(", ")||"None")+"</b></div><div><span>SUCCESSORS (OUT)</span><b>"+(j.successors.join(", ")||"None")+"</b></div></div>";
+      if(muleTransforms[j.id])selectedDetail.insertAdjacentHTML("beforeend",transformationHtml(muleTransforms[j.id]));
+      payload.textContent=JSON.stringify({selectedObject:{jobOrInterfaceId:j.id,jclQueueOrTarget:j.jcl,programOrFlow:j.program,platform:j.type,technicalFilesOrTarget:j.files,frequency:j.frequency,estimatedDurationMinutes:j.mins,predecessors:j.predecessors,successors:j.successors},transformation:muleTransforms[j.id]?{direction:muleTransforms[j.id].direction,dataIn:muleTransforms[j.id].sourceFormat,dataOut:muleTransforms[j.id].targetFormat,fieldMappings:muleTransforms[j.id].maps}:null,classification:"TECHNICAL_METADATA_ONLY",recordContentIncluded:false},null,2);
+    }
+    function transformationHtml(t){return "<div class='transformFlow'><div class='transformSide'><span>DATA IN - "+t.sourceFormat+"</span><b>"+t.source+"</b><code>"+t.sampleIn+"</code></div><div class='transformArrow'>-></div><div class='transformSide out'><span>DATA OUT - "+t.targetFormat+"</span><b>"+t.target+"</b><code>"+t.sampleOut+"</code></div></div><div class='mappingList'>"+t.maps.map(m=>"<div><span>"+m[0]+"</span><i>-></i><span>"+m[1]+"</span></div>").join("")+"</div><div class='transformRule'><b>TRANSFORMATION RULES:</b> "+t.rules+"</div>"}
+    function inspectMuleTransform(id){
+      if(!gatewayRun)runGateway();
+      const j=byId[id],node=[...document.querySelectorAll(".node")].find(n=>n.textContent.includes(id));
+      if(j&&node)inspectJob(j,node);
+      const t=muleTransforms[id];payload.textContent=JSON.stringify({interfaceId:id,direction:t.direction,dataIn:{source:t.source,format:t.sourceFormat,fields:t.maps.map(m=>m[0])},transformation:t.maps.map(m=>({from:m[0],to:m[1]})),dataOut:{target:t.target,format:t.targetFormat,fields:t.maps.map(m=>m[1])},rules:t.rules,classification:"SYNTHETIC_FIELD_MAPPING_METADATA",recordValuesIncluded:false},null,2);
+      policyNotice.textContent="MuleSoft transformation selected: "+t.title+" - field names and mapping rules only";tab("gateway");
+      selectedDetail.scrollIntoView({behavior:"smooth",block:"nearest"});
+    }
+    async function loadDefaultMetadata(){
+      try{
+        const response=await fetch("enterprise-metadata.json",{cache:"no-store"});if(!response.ok)throw new Error("HTTP "+response.status);
+        applyMetadata(await response.json(),"enterprise-metadata.json");
+      }catch(error){metadataStatus.textContent="EMBEDDED FALLBACK";metadataSummary.innerHTML="Browser file mode cannot fetch a sibling JSON file. The same embedded enterprise graph remains active; use <b>Load another JSON</b> to test a file."}
+    }
+    function loadUploadedMetadata(event){const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{applyMetadata(JSON.parse(reader.result),file.name)}catch(error){metadataStatus.textContent="INVALID JSON";metadataSummary.textContent=error.message}};reader.readAsText(file)}
+    function applyMetadata(data,source){
+      if(!Array.isArray(data.jobs)||!Array.isArray(data.dependencies))throw new Error("JSON requires jobs[] and dependencies[]");
+      metadataModel=data;
+      jobs=data.jobs.map(j=>({...j,...(fallbackTiming[j.id]||{}),mins:Number(j.duration??j.mins??0),files:Array.isArray(j.files)?j.files.join(","):String(j.files||"")}));
+      dependencies=data.dependencies.map(d=>Array.isArray(d)?d:[d.from,d.to,d.type||"predecessor"]);
+      simulation={type:null,jobId:null,delay:0,affected:[]};renderGraph();metadataStatus.textContent="JSON ACTIVE";metadataSummary.innerHTML="<strong>"+source+"</strong>: "+jobs.length+" nodes, "+dependencies.length+" relationships. Graph, simulator and answers recalculated.";simulationStatus.textContent="BASELINE";simulationResult.innerHTML="<strong>Baseline:</strong> no failures or delays applied.";
+    }
+    function downstreamOf(id){const seen=new Set(),queue=[id];while(queue.length){const current=queue.shift();dependencies.filter(d=>d[0]===current).forEach(d=>{if(!seen.has(d[1])){seen.add(d[1]);queue.push(d[1])}})}return [...seen]}
+    function upstreamOf(id){const seen=new Set(),queue=[id];while(queue.length){const current=queue.shift();dependencies.filter(d=>d[1]===current).forEach(d=>{if(!seen.has(d[0])){seen.add(d[0]);queue.push(d[0])}})}return [...seen]}
+    function timeToMinutes(value){if(!value)return null;const parts=String(value).split(":").map(Number);return parts.length===2&&parts.every(Number.isFinite)?parts[0]*60+parts[1]:null}
+    function formatTime(value){if(value===null||!Number.isFinite(value))return "BLOCKED";const day=Math.floor(value/1440),minutes=((value%1440)+1440)%1440;return (day?"D+"+day+" ":"")+String(Math.floor(minutes/60)).padStart(2,"0")+":"+String(minutes%60).padStart(2,"0")}
+    function calculateSchedule(activeSimulation){
+      const result={},pending=new Set(jobs.map(j=>j.id));let guard=0;
+      while(pending.size&&guard++<jobs.length+2){let progressed=false;for(const id of [...pending]){const j=byId[id],preds=j.predecessors||[];if(preds.some(p=>pending.has(p)))continue;const predResults=preds.map(p=>result[p]),failedUpstream=predResults.some(r=>!r||r.blocked);let start=Math.max(timeToMinutes(j.plannedStart)||0,...predResults.filter(Boolean).map(r=>r.finish||0));let blocked=failedUpstream;
+          if(activeSimulation?.type==="FAILURE"&&(id===activeSimulation.jobId||activeSimulation.affected.includes(id)))blocked=true;
+          if(activeSimulation?.type==="DELAY"&&id===activeSimulation.jobId)start+=activeSimulation.delay;
+          const finish=blocked?null:start+Number(j.mins||0),sla=timeToMinutes(j.slaDeadline),slack=sla===null?null:(finish===null?null:sla-finish),breach=sla!==null&&(finish===null||finish>sla);
+          result[id]={start,finish,sla,slack,breach,blocked};pending.delete(id);progressed=true;
+        }if(!progressed)break;
+      }
+      pending.forEach(id=>{const j=byId[id],sla=timeToMinutes(j.slaDeadline);result[id]={start:null,finish:null,sla,slack:null,breach:sla!==null,blocked:true}});return result;
+    }
+    function calculateAndRenderTiming(){
+      timingResults.baseline=calculateSchedule(null);timingResults.scenario=calculateSchedule(simulation.type?simulation:null);const rows=jobs.filter(j=>timeToMinutes(j.slaDeadline)!==null),scenario=timingResults.scenario,finite=Object.values(scenario).map(r=>r.finish).filter(Number.isFinite),breaches=rows.filter(j=>scenario[j.id].breach),slacks=rows.map(j=>scenario[j.id].slack).filter(Number.isFinite);
+      scenarioFinish.textContent=formatTime(finite.length?Math.max(...finite):null);slaOutcomes.textContent=rows.length;slaBreaches.textContent=breaches.length;minimumSlack.textContent=slacks.length?(Math.min(...slacks)>=0?"+":"")+Math.min(...slacks)+" min":"BLOCKED";breachMetric.classList.toggle("breach",breaches.length>0);
+      slaTable.innerHTML="<div class='slaRow header'><span>SLA OUTCOME</span><span>START</span><span>FINISH</span><span>DEADLINE</span><span>SLACK</span></div>"+rows.map(j=>{const r=scenario[j.id];return "<div class='slaRow "+(r.breach?"late":"")+"'><span>"+j.id+"</span><span>"+formatTime(r.start)+"</span><span>"+formatTime(r.finish)+"</span><span>"+formatTime(r.sla)+"</span><span>"+(r.blocked?"BLOCKED":(r.slack>=0?"+":"")+r.slack+"m")+"</span></div>"}).join("");
+      const first=breaches[0];slaRecommendation.innerHTML=breaches.length?"<b>ADVISORY — HUMAN APPROVAL REQUIRED:</b> "+breaches.length+" SLA outcome"+(breaches.length>1?"s are":" is")+" at risk. Review the path to "+first.id+", confirm the operational condition, and consider an approved CA7 hold/rerun decision. No action has been executed.":"<b>WITHIN SLA:</b> All declared SLA outcomes retain non-negative slack. Continue monitoring; no production action has been executed.";
+    }
+    function applySimulation(){
+      const jobId=simJob.value,type=simType.value,delay=Math.max(1,Number(delayMinutes.value)||30),affected=downstreamOf(jobId);
+      simulation={type,jobId,delay:type==="DELAY"?delay:0,affected};calculateAndRenderTiming();applySimulationStyles();simulationStatus.textContent=type+" ACTIVE";
+      const breaches=jobs.filter(j=>timingResults.scenario[j.id]?.breach),baseline=timingResults.baseline[jobId],scenario=timingResults.scenario[jobId];simulationResult.innerHTML="<strong>"+jobId+" "+(type==="FAILURE"?"failed":"start delayed by "+delay+" minutes")+".</strong> Planned finish "+formatTime(baseline?.finish)+"; scenario finish "+formatTime(scenario?.finish)+". "+affected.length+" downstream objects affected and "+breaches.length+" declared SLA outcomes breached.";
+      ask.value="What is the downstream impact of "+jobId+" "+(type==="FAILURE"?"failing?":"being delayed by "+delay+" minutes?");
+    }
+    function resetSimulation(){simulation={type:null,jobId:null,delay:0,affected:[]};calculateAndRenderTiming();applySimulationStyles();simulationStatus.textContent="BASELINE";simulationResult.innerHTML="<strong>Baseline:</strong> planned times and SLA slack calculated from technical metadata."}
+    function applySimulationStyles(){
+      document.querySelectorAll(".node").forEach(n=>{n.classList.remove("failed","delayed","blocked","slaBreach");const old=n.querySelector(".state");if(old)old.remove();const id=n.dataset.jobId;if(timingResults.scenario[id]?.breach)n.classList.add("slaBreach");if(!simulation.type)return;if(id===simulation.jobId){n.classList.add(simulation.type==="FAILURE"?"failed":"delayed");n.insertAdjacentHTML("beforeend","<span class='state'>"+(simulation.type==="FAILURE"?"FAILED":"DELAY +"+simulation.delay+"m")+"</span>")}else if(simulation.affected.includes(id)){n.classList.add("blocked");n.insertAdjacentHTML("beforeend","<span class='state'>"+(simulation.type==="FAILURE"?"BLOCKED":timingResults.scenario[id]?.breach?"SLA RISK":"LATE")+"</span>")}});
+      document.querySelectorAll(".edge").forEach(e=>{e.classList.remove("impacted","delayedEdge");if(simulation.type&&(e.dataset.from===simulation.jobId||simulation.affected.includes(e.dataset.from))&&simulation.affected.includes(e.dataset.to))e.classList.add(simulation.type==="FAILURE"?"impacted":"delayedEdge")})
+    }
+    function inspectArtifact(type,name,relationship){
+      if(!gatewayRun)runGateway();
+      payload.textContent=JSON.stringify({artifactType:type,name:name,technicalRelationship:relationship,classification:type==="CLASSIFICATION"?"DATA_POLICY":"TECHNICAL_METADATA_ONLY",sensitiveRecordValuesSent:false},null,2);
+      policyNotice.textContent="Selected "+type+" artifact: "+name+" - click another link to follow its technical relationships";
+      tab("gateway");
+    }
+    function inspectMcp(id,button){
+      const connector=mcpConnectors[id];document.querySelectorAll(".mcpConnector").forEach(x=>x.classList.remove("active"));button.classList.add("active");mcpStatus.textContent=connector.name.toUpperCase()+" · READ-ONLY";
+      mcpDetail.innerHTML="<strong>"+connector.server+"</strong> · Resources: <span class='mcpAllowed'>"+connector.resources.join(", ")+"</span><br>Permitted tools: <span class='mcpAllowed'>"+connector.tools.join(", ")+"</span><br>Blocked tools: <span class='mcpBlocked'>"+connector.blocked.join(", ")+"</span> · Credentials and record values remain inside the connector runtime.";
+      if(!gatewayRun)runGateway();payload.textContent=JSON.stringify({protocol:"MCP",connector:connector.name,server:connector.server,mode:"READ_ONLY",resources:connector.resources,allowedTools:connector.tools,blockedTools:connector.blocked,sampleMetadata:connector.sample,governance:{customerApprovedEnvironment:true,allowListEnforced:true,recordValuesIncluded:false,productionExecutionEnabled:false,auditEvent:"MCP-DEMO-"+id}},null,2);policyNotice.textContent=connector.name+" MCP metadata passed the safety gateway; production operations remain blocked";tab("gateway");
+    }
+    function runGateway(){
+      gatewayRun=true;policyNotice.textContent="Policy passed: 86 technical objects loaded - 7 sensitive field types blocked - 0 record values sent";
+      policyNotice.className="notice";
+      payload.textContent=JSON.stringify({classification:"SYNTHETIC_TECHNICAL_METADATA",approvedEnvironment:"Customer-approved private AI",connectorLayer:{protocol:"MCP",mode:"READ_ONLY",servers:Object.values(mcpConnectors).map(c=>c.server),toolAllowListEnforced:true,productionExecutionEnabled:false},schedules:["SCH_HOURLY_INGEST","SCH_DAILY_REPORTING","SCH_DWH_FULL_DUMP"],inventory:{jobsAndInterfaces:23,dependencyLinks:30,jclMembers:19,naturalModules:18,cobolModules:14,mulesoftFlows:4,adabasFileIds:12},frequencies:["REAL-TIME","HOURLY","DAILY","EOD","DAILY FULL"],mulesoftQueues:["POLICY.EVENTS.IN","PAYMENT.EVENTS.IN","POLICY.EVENTS.ACK","MAINFRAME.DWH.FULL","DWH.CLOUD.OUT"],transformationContracts:Object.fromEntries(Object.entries(muleTransforms).map(([id,t])=>[id,{direction:t.direction,sourceFormat:t.sourceFormat,targetFormat:t.targetFormat,fieldMappings:t.maps}])),technicalFileIds:["F101 POLICY","F210 PAYMENTS","F220 CASHIERING","F230 TRANSACTION","F240 PERSONALITY","F250 ALLOCATION","F260 INSTRUCTION","F270 SUMS_AT_RISK","F280 TAX"],targets:["ENTERPRISE_DWH","CLOUD_DATA_LAKE"],excludedNonSensitive:["contractNumber","policyNumber"],blockedSensitive:["idNumber","passportNumber","phoneNumber","emailId","qualification","medicalData","smokerStatus"],recordContentIncluded:false},null,2);
+      step1.className="step done";step2.className="step active";step3.className="step";mainTitle.textContent="Safety gateway complete - inspect the payload, then ask a question";tab("gateway");
+    }
+    function goStep(n){
+      if(n===1){sourceArea.scrollIntoView({behavior:"smooth"});return}
+      if(n===2){
+        if(!gatewayRun)runGateway();
+        step1.className="step done";step2.className="step active";step3.className="step";
+        tab("gateway");
+        policyNotice.textContent="Safety gateway open: technical metadata allowed, sensitive record fields blocked";
+        setTimeout(()=>gatewayPanel.scrollIntoView({behavior:"smooth",block:"start"}),50);
+        toast.textContent="Safety gateway opened";toast.style.display="block";setTimeout(()=>toast.style.display="none",1800);
+      }
+      if(n===3){if(!gatewayRun)runGateway();ask.focus();step1.className="step done";step2.className="step done";step3.className="step active"}
+    }
+    function tab(name){
+      gatewayPanel.classList.toggle("hidden",name!=="gateway");answerPanel.classList.toggle("hidden",name!=="answer");
+      gatewayTab.className=name==="gateway"?"active":"";answerTab.className=name==="answer"?"active":"";
+    }
+    function askExample(i){
+      const q=["Trace an online policy booking through hourly mainframe processing","Which jobs run hourly and in parallel?","What uses payment and cashiering ADABAS files?","Show personality medical and smoker record data","Trace the mainframe full dump to DWH and cloud","How is the daily business in and out report produced?"][i];ask.value=q;analyze();
+    }
+    function panelExample(i){
+      const q=["Trace an online policy booking through hourly mainframe processing","Which jobs run hourly and in parallel?","What uses payment and cashiering ADABAS files?","Show personality medical and smoker record data","Trace the mainframe full dump to DWH and cloud","How is the daily business in and out report produced?"][i];
+      answerAsk.value=q;ask.value=q;analyze();
+    }
+    function analyzeFromPanel(){ask.value=answerAsk.value;analyze()}
+    function normalizeWords(value){return String(value||"").toUpperCase().replace(/[^A-Z0-9]+/g," ").trim()}
+    function mentionedJobs(question){
+      const normalized=normalizeWords(question);return jobs.filter(j=>{
+        const aliases=[j.id,j.jcl,j.program].map(normalizeWords).filter(Boolean);
+        return aliases.some(alias=>normalized.includes(alias));
+      });
+    }
+    function mentionedFiles(question){
+      const normalized=normalizeWords(question),known=metadataModel.adabasFiles||[];
+      return known.filter(file=>normalized.includes(normalizeWords(file.id))||normalized.includes(normalizeWords(file.name)));
+    }
+    function shortestPath(from,to){
+      const queue=[[from]],visited=new Set([from]);while(queue.length){const path=queue.shift(),last=path[path.length-1];if(last===to)return path;for(const next of dependencies.filter(d=>d[0]===last).map(d=>d[1]))if(!visited.has(next)){visited.add(next);queue.push([...path,next])}}return [];
+    }
+    function longestPath(){
+      const memo=new Map(),visiting=new Set();
+      function visit(id){if(memo.has(id))return memo.get(id);if(visiting.has(id))return {duration:0,path:[id]};visiting.add(id);let best={duration:Number(byId[id]?.mins||0),path:[id]};for(const next of dependencies.filter(d=>d[0]===id).map(d=>d[1])){const tail=visit(next),candidate={duration:Number(byId[id]?.mins||0)+tail.duration,path:[id,...tail.path]};if(candidate.duration>best.duration)best=candidate}visiting.delete(id);memo.set(id,best);return best}
+      return jobs.map(j=>visit(j.id)).sort((a,b)=>b.duration-a.duration)[0]||{duration:0,path:[]};
+    }
+    function evidenceFor(ids,label="GRAPH"){
+      return ids.slice(0,12).map(id=>{const j=byId[id];return [id,j?j.jcl+" / "+j.program+" / "+j.frequency:"Relationship",label]});
+    }
+    function deterministicAnswer(question){
+      const q=question.toLowerCase(),hits=mentionedJobs(question),files=mentionedFiles(question);
+      const sensitive=/medical|smoker|passport|id number|phone|email|qualification|personality record|customer record|record data/.test(q);
+      if(sensitive)return {title:"Request blocked by the safety gateway",text:"The request asks for sensitive record content. The engine can analyze F240 PERSONALITY as a technical dependency, but ID, passport, contact, qualification, medical and smoker-status values never enter the AI payload.",evidence:[["POLICY-DATA-001","Sensitive record intent detected","BLOCKED"],["TRANSMISSION LOG","0 customer record values sent","SAFE"]]};
+      if(/mcp|ispw|control-m|control m|naturalone|connector/.test(q)){const matches=Object.values(mcpConnectors).filter(c=>q.includes(c.name.toLowerCase())||q.includes(c.server.replace("mcp-","").split("-")[0])||q.includes("mcp"));return {title:"MCP provides a governed, read-only connector layer",text:"The demo standardizes metadata discovery across "+matches.map(c=>c.name).join(", ")+". Each MCP server exposes allow-listed resources and read-only tools; platform credentials stay in the connector runtime, record values are excluded, and production execution tools are blocked.",evidence:matches.map(c=>[c.server,c.tools.join(", "),"MCP ALLOWED"])};}
+      if(simulation.type&&(/impact|downstream|fail|delay|late|blocked/.test(q)||hits.some(j=>j.id===simulation.jobId))){const source=byId[simulation.jobId],affected=simulation.affected;return {title:simulation.jobId+" simulation impact",text:(source?.id||simulation.jobId)+" is simulated as "+(simulation.type==="FAILURE"?"failed":"delayed by "+simulation.delay+" minutes")+". Deterministic traversal finds "+affected.length+" downstream objects "+(simulation.type==="FAILURE"?"blocked":"at risk of finishing late")+": "+(affected.join(" -> ")||"none")+".",evidence:[[simulation.jobId,simulation.type==="FAILURE"?"Injected failure":"Injected +"+simulation.delay+" minute delay","SIMULATION"],...evidenceFor(affected,"IMPACTED")]};}
+      if(/sla|deadline|slack|finish time|late/.test(q)){const rows=jobs.filter(j=>timingResults.scenario[j.id]?.sla!==null&&timingResults.scenario[j.id]?.sla!==undefined),breaches=rows.filter(j=>timingResults.scenario[j.id].breach);return {title:breaches.length?breaches.length+" SLA outcomes require human attention":"All declared SLA outcomes remain within tolerance",text:rows.map(j=>{const r=timingResults.scenario[j.id];return j.id+" finishes "+formatTime(r.finish)+" against "+formatTime(r.sla)+" ("+(r.blocked?"blocked":(r.slack>=0?"+":"")+r.slack+" minutes slack")+")"}).join("; ")+". This is advisory metadata analysis and performs no CA7 action.",evidence:rows.map(j=>{const r=timingResults.scenario[j.id];return [j.id,formatTime(r.finish)+" vs SLA "+formatTime(r.sla),r.breach?"BREACH":"WITHIN SLA"]})};}
+      if(/critical path|longest path/.test(q)){const result=longestPath();return {title:"Calculated metadata critical path",text:"Using declared durations and dependency edges, the longest path is "+result.duration+" minutes: "+result.path.join(" -> ")+". This is deterministic metadata analysis, not a prediction from production records.",evidence:evidenceFor(result.path,"CRITICAL PATH")};}
+      if((/path|trace|flow|from/.test(q))&&hits.length>=2){const path=shortestPath(hits[0].id,hits[hits.length-1].id);return path.length?{title:"Dependency path from "+hits[0].id+" to "+hits[hits.length-1].id,text:path.join(" -> ")+". The route contains "+(path.length-1)+" directed relationships.",evidence:evidenceFor(path,"PATH")}:{title:"No directed path found",text:"The loaded metadata contains no directed dependency path from "+hits[0].id+" to "+hits[hits.length-1].id+".",evidence:[[hits[0].id,"Start object","GRAPH"],[hits[hits.length-1].id,"Target object","GRAPH"]]};
+      }
+      if(hits.length&&/predecessor|upstream|block|depend on|before/.test(q)){const id=hits[0].id,items=upstreamOf(id);return {title:"Upstream dependencies for "+id,text:items.length+" upstream objects can affect "+id+": "+(items.join(", ")||"none")+".",evidence:evidenceFor(items,"UPSTREAM")};}
+      if(hits.length&&/successor|downstream|impact|after|fail|delay|trace|flow/.test(q)){const id=hits[0].id,items=downstreamOf(id);return {title:"Downstream impact for "+id,text:items.length+" downstream objects are reachable from "+id+": "+(items.join(", ")||"none")+". Apply a failure or delay in the simulator to visualize their state.",evidence:evidenceFor(items,"DOWNSTREAM")};}
+      if(files.length||/uses?\s+(payment|cashier|policy|transaction|allocation|instruction|tax|risk)/.test(q)){const matched=files.length?files:mentionedFiles(q),ids=new Set(matched.map(f=>f.id)),consumers=jobs.filter(j=>String(j.files).split(",").some(f=>ids.has(f.trim())));return {title:"ADABAS technical usage for "+(matched.map(f=>f.id+" "+f.name).join(", ")||"the requested file"),text:consumers.length+" jobs reference the selected technical file identifiers: "+(consumers.map(j=>j.id).join(", ")||"none")+". No file records or field values were inspected.",evidence:consumers.map(j=>[j.id,j.jcl+" uses "+String(j.files),"FILE LINK"])};}
+      if(/hourly|daily|eod|real time|real-time/.test(q)){const frequency=q.includes("hourly")?"HOURLY":q.includes("eod")?"EOD":q.includes("real")?"REAL-TIME":"DAILY",matches=jobs.filter(j=>j.frequency.includes(frequency));return {title:frequency+" schedule inventory",text:matches.length+" objects match the loaded schedule metadata: "+matches.map(j=>j.id).join(", ")+".",evidence:evidenceFor(matches.map(j=>j.id),frequency)};}
+      if(/mule|transform|data in|data out|interface/.test(q)){const requested=hits.find(j=>muleTransforms[j.id]),entries=requested?[[requested.id,muleTransforms[requested.id]]]:Object.entries(muleTransforms);return {title:"MuleSoft metadata transformations",text:entries.map(([id,t])=>id+": "+t.sourceFormat+" -> "+t.targetFormat).join("; ")+". Only field names, formats and mapping rules are exposed.",evidence:entries.map(([id,t])=>[id,t.direction+" / "+t.source+" -> "+t.target,"TRANSFORM"])};}
+      if(hits.length){const j=hits[0];return {title:"Metadata summary for "+j.id,text:j.id+" runs "+j.frequency+" using "+j.jcl+" and "+j.program+". It has "+j.predecessors.length+" direct predecessors, "+j.successors.length+" direct successors and references "+(j.files||"no ADABAS file identifiers")+".",evidence:[[j.id,j.type+" / "+j.mins+" minutes","OBJECT"],...evidenceFor(j.predecessors,"PREDECESSOR"),...evidenceFor(j.successors,"SUCCESSOR")]};}
+      return {title:"Question needs a metadata object or analysis intent",text:"Ask naturally about a job, JCL, program, ADABAS file, predecessor, successor, failure, delay, schedule, MuleSoft transformation, path or critical path. The answer engine uses only the currently loaded JSON graph.",evidence:[[jobs.length+" OBJECTS",dependencies.length+" directed relationships loaded","READY"],["EXAMPLE","What fails downstream of PAYMENT_CAPTURE?","TRY THIS"],["EXAMPLE","Show the critical path","TRY THIS"]]};
+    }
+    function analyze(){
+      if(!gatewayRun)runGateway();
+      const result=deterministicAnswer(ask.value),{title,text,evidence}=result;
+      answerAsk.value=ask.value;answerTitle.textContent=title;answerText.textContent=text;evidenceRows.innerHTML=evidence.map((e,i)=>"<div><span>"+String(i+1).padStart(2,"0")+"</span><code>"+e[0]+" · "+e[1]+"</code><em>"+e[2]+"</em></div>").join("");
+      answerEmpty.classList.add("hidden");answerContent.classList.remove("hidden");tab("answer");
+      step1.className="step done";step2.className="step done";step3.className="step active";
+    }
+    function recordReview(){reviewModal.style.display="grid";validateReviewer(false);setTimeout(()=>reviewerName.focus(),50)}
+    function closeReview(){reviewModal.style.display="none";authError.style.display="none";reviewerName.classList.remove("unauthorized")}
+    function validateReviewer(showMessage=true){
+      const authorized=reviewerName.value.trim().toLowerCase()==="rahul khanna";
+      reviewerName.classList.toggle("unauthorized",!authorized);
+      authError.style.display=!authorized&&showMessage?"block":"none";
+      return authorized;
+    }
+    function saveReview(){
+      const reviewer=reviewerName.value.trim(),comment=reviewComment.value.trim(),decision=reviewDecision.value,reference=reviewReference.value.trim();
+      if(!reviewer){reviewerName.focus();return}
+      if(!validateReviewer(true)){reviewerName.focus();toast.textContent="Unauthorized reviewer. Review was not recorded.";toast.style.display="block";setTimeout(()=>toast.style.display="none",3500);return}
+      if(!comment){reviewComment.focus();return}
+      const existing=document.getElementById("reviewRecord");if(existing)existing.remove();
+      const record=document.createElement("div");record.id="reviewRecord";record.className="reviewRecord";
+      record.innerHTML="<b>HUMAN REVIEW RECORDED</b><p><strong>"+escapeText(decision)+"</strong> by "+escapeText(reviewer)+"</p><p>"+escapeText(comment)+"</p><p>Reference: "+escapeText(reference||"Not supplied")+" | Production action: NONE</p>";
+      document.querySelector(".review").insertAdjacentElement("afterend",record);
+      document.querySelector(".review").textContent="Update human review";
+      closeReview();toast.textContent="Human review saved. No production action was performed.";toast.style.display="block";setTimeout(()=>toast.style.display="none",3500);
+    }
+    function escapeText(value){const el=document.createElement("div");el.textContent=value;return el.innerHTML}
+    loadDefaultMetadata();
+  </script>
+</body>
+</html>

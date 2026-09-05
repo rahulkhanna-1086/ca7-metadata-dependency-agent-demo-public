@@ -12,6 +12,22 @@
       {"platform":"NaturalONE","server":"mcp-naturalone-metadata","resources":["libraries","modules","references","adabas-files"],"allowedTools":["search_modules","get_callers","get_callees","get_file_references"],"blockedTools":["edit_module","compile_module","deploy_module","read_adabas_records"]}
     ]
   },
+  "modernizationFactory": {
+    "mode": "ADVISORY_HUMAN_CONTROLLED",
+    "customerApprovedAIRequired": true,
+    "recordValuesIncluded": false,
+    "flow": ["DISCOVER", "UNDERSTAND", "APPLICATION_KNOWLEDGE_GRAPH", "DECOMPOSITION", "TRANSFORM", "MODERN_CLOUD_PLATFORM"],
+    "understandPattern": {"platform":"IBM watsonx","purpose":"Semantic analysis of approved technical artifacts","status":"REFERENCE_PATTERN"},
+    "knowledgeGraph": {"nodeTypes":["program","JCL","ADABAS_FILE_ID","interface","schedule","business_rule_reference"],"relationshipTypes":["CALLS","READS","WRITES","PRECEDES","TRANSFORMS","PUBLISHES"]},
+    "transformationTracks": [
+      {"track":"CODE","source":"Natural","target":"Java/Spring","pattern":"AWS Transform / Blu Age reference"},
+      {"track":"DATA","source":"ADABAS schema metadata","target":"PostgreSQL","pattern":"AWS migration reference"},
+      {"track":"UI","source":"Natural Maps metadata","target":"Modern web UI","pattern":"Astadia-inspired reference"},
+      {"track":"BATCH","source":"JCL and scheduler metadata","target":"AWS Step Functions","pattern":"AWS orchestration reference"}
+    ],
+    "cloudTargets": ["MuleSoft APIs", "Java/Spring microservices", "EventBridge events", "Containers / AWS runtime"],
+    "prohibitedActions": ["transform_source_automatically", "migrate_records", "deploy_services", "change_production_schedule"]
+  },
   "schedules": [
     {"id":"SCH_HOURLY_INGEST","frequency":"HOURLY","description":"Online policy, payment and transaction ingestion"},
     {"id":"SCH_DAILY_REPORTING","frequency":"DAILY","description":"New business and servicing operational reporting"},

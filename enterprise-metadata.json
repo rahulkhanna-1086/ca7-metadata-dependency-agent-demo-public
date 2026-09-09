@@ -19,6 +19,14 @@
     "flow": ["DISCOVER", "UNDERSTAND", "APPLICATION_KNOWLEDGE_GRAPH", "DECOMPOSITION", "TRANSFORM", "MODERN_CLOUD_PLATFORM"],
     "understandPattern": {"platform":"IBM watsonx","purpose":"Semantic analysis of approved technical artifacts","status":"REFERENCE_PATTERN"},
     "knowledgeGraph": {"nodeTypes":["program","JCL","ADABAS_FILE_ID","interface","schedule","business_rule_reference"],"relationshipTypes":["CALLS","READS","WRITES","PRECEDES","TRANSFORMS","PUBLISHES"]},
+    "semanticWorkbench": {
+      "implementation": "DETERMINISTIC_DEMO",
+      "futurePlatform": "CUSTOMER_APPROVED_IBM_WATSONX",
+      "scenarios": ["POLICY_CAPTURE", "PAYMENTS_AND_CASHIERING", "ALLOCATION_INSTRUCTIONS", "DAILY_BUSINESS_REPORTING"],
+      "proofStages": ["RAW_TECHNICAL_METADATA", "SAFETY_CLASSIFICATION", "CONCEPT_EXTRACTION", "KNOWLEDGE_GRAPH", "AUTHORISED_HUMAN_VALIDATION"],
+      "evidenceSources": ["NaturalONE module references", "ISPW component metadata", "Control-M/CA7 schedule metadata", "ADABAS schema metadata"],
+      "customerRecordValuesTransmitted": 0
+    },
     "transformationTracks": [
       {"track":"CODE","source":"Natural","target":"Java/Spring","pattern":"AWS Transform / Blu Age reference"},
       {"track":"DATA","source":"ADABAS schema metadata","target":"PostgreSQL","pattern":"AWS migration reference"},

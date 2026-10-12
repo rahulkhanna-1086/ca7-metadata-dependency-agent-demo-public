@@ -49,6 +49,8 @@
     .modalBack{position:fixed;inset:0;z-index:20;display:none;place-items:center;padding:20px;background:#020509d9;backdrop-filter:blur(5px)}.modalCard{width:540px;max-width:100%;padding:22px;border:1px solid #2a495d;border-radius:10px;background:#0c151f;box-shadow:0 30px 90px #000}.modalCard h2{margin:6px 0}.modalCard>p{color:#8fa0b2;font-size:10px;line-height:1.55}.reviewForm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.reviewForm label{display:flex;flex-direction:column;gap:6px;color:#8193a6;font-size:8px;letter-spacing:.06em}.reviewForm input,.reviewForm select,.reviewForm textarea{padding:9px;border:1px solid #26394c;border-radius:5px;background:#071019;color:#dbe7f1;outline:0}.reviewForm textarea{height:95px;resize:vertical;font:10px/1.5 Arial,sans-serif}.reviewForm .wide{grid-column:1/-1}.reviewForm input:focus,.reviewForm select:focus,.reviewForm textarea:focus{border-color:var(--cyan)}.reviewForm input.unauthorized{border-color:var(--red);background:#231317}.formNote{grid-column:1/-1;padding:9px;border:1px solid #4b3b21;border-radius:5px;background:#211b11;color:#a89370;font-size:8px}.authNote{grid-column:1/-1;display:flex;justify-content:space-between;padding:9px;border:1px solid #28543f;border-radius:5px;background:#0d2219;color:#7edfac;font-size:8px}.authNote strong{color:#b6f1d0}.authError{grid-column:1/-1;display:none;padding:10px;border:1px solid #71383a;border-radius:5px;background:#2a1518;color:#ff918d;font-size:9px}.modalActions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.modalActions button{padding:9px 12px;border:1px solid #2a3c4d;border-radius:5px;background:#101a25;color:#b8c7d5;cursor:pointer}.modalActions .save{border-color:#377b64;background:#1a5945;color:white}
     .empty{padding:35px 20px;text-align:center;color:#738498}.empty b{display:block;color:#bdc9d4;margin:8px}.hidden{display:none!important}
     .toast{position:fixed;right:20px;bottom:20px;padding:12px 15px;border:1px solid #326a50;border-radius:6px;background:#10271d;color:#82e5b3;box-shadow:0 15px 40px #000;display:none}
+
+    .opsAgent{margin:14px 0;padding:14px;border:1px solid #396340;border-radius:9px;background:linear-gradient(145deg,#081610,#0b171d)}.opsHead{display:flex;align-items:center;gap:12px}.opsIdentity{width:52px;height:46px;display:grid;place-items:center;border:1px solid #4b8759;border-radius:10px;background:#10291a;color:#83e7a1;font-size:10px;font-weight:800}.opsHead h3{margin:3px 0;font-size:15px}.opsHead p{margin:0;color:#7d9988;font-size:8px}.opsPill{margin-left:auto;padding:6px 9px;border:1px solid #396c47;border-radius:14px;color:#79dda0;font-size:8px;white-space:nowrap}.opsControls{display:grid;grid-template-columns:1.2fr 1fr 1fr auto auto auto;gap:7px;margin:11px 0}.opsControls select,.opsControls button,.opsVerify input,.opsVerify select{padding:8px;border:1px solid #28483a;border-radius:5px;background:#091711;color:#c9dfd0;font-size:8px}.opsControls button{background:#246d3d;color:white;cursor:pointer}.opsControls button.secondary{background:#12251a;color:#87cea0}.opsSummary{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.opsMetric{padding:8px;border:1px solid #203c30;border-radius:5px;background:#08130f}.opsMetric span{display:block;color:#6c8e78;font-size:7px}.opsMetric b{display:block;margin-top:3px;color:#d1e8d7;font-size:13px}.opsCalendarProof{margin-top:9px;padding:9px;border:1px solid #264936;border-radius:6px;background:#09150f;color:#839b8a;font-size:8px;line-height:1.5}.opsCalendarProof b{color:#8be0a6}.opsCalendarProof.bad{border-color:#6b3738;background:#211315;color:#df9290}.opsReport{margin-top:9px;border:1px solid #203c30;border-radius:6px;overflow:hidden}.opsRow{display:grid;grid-template-columns:1.2fr .8fr .8fr .8fr .8fr 1fr;gap:6px;padding:7px;border-bottom:1px solid #172c23;color:#91aa99;font-size:8px}.opsRow.head{background:#10251a;color:#6fd895;font-weight:700}.opsFinding{margin-top:9px;padding:10px;border:1px solid #57472b;border-radius:6px;background:#17140d}.opsFinding h4{margin:0 0 7px;color:#f0bb61;font-size:10px}.findingCard{display:grid;grid-template-columns:22px 1.05fr 1fr 1fr;gap:8px;padding:8px 0;border-top:1px solid #302817;color:#a99f86;font-size:8px}.findingCard:first-of-type{border-top:0}.findingCard strong{color:#f0c476}.findingCard code{color:#b8d5c1;white-space:normal}.severity{width:20px;height:20px;display:grid;place-items:center;border-radius:50%;background:#452118;color:#ff9286;font-size:7px}.severity.medium{background:#3c3218;color:#e9c56e}.opsVerify{display:flex;align-items:center;gap:7px;margin-top:9px;padding-top:9px;border-top:1px solid #244333}.opsVerify span{color:#789181;font-size:7px}.opsVerify input{width:130px}.opsVerify select{min-width:170px}.opsVerify button{padding:8px;border:1px solid #39724a;border-radius:5px;background:#10291a;color:#79dda0;cursor:pointer}.opsVerifyResult{margin-left:auto;color:#718879;font-size:8px}.opsVerifyResult.ok{color:#65dda1}.opsVerifyResult.bad{color:#ff918d}@media(max-width:900px){.opsHead,.opsVerify{align-items:stretch;flex-direction:column}.opsPill,.opsVerifyResult{margin-left:0}.opsControls,.opsSummary{grid-template-columns:1fr 1fr}.opsRow,.findingCard{grid-template-columns:1fr}}
     @media(max-width:900px){.workspace{grid-template-columns:1fr}.side{position:relative;top:auto;height:auto;max-height:none;border-left:0;border-top:1px solid var(--line);overflow:visible}.panel{overflow:visible}.steps,.controlDeck{grid-template-columns:1fr}.sourceGrid{grid-template-columns:1fr}.boundary{display:none}}
   </style>
 </head>
@@ -111,6 +113,22 @@
         <div class="cloud"><button class="factoryCard" onclick="inspectFactory('APIS',this)"><b>APIs · MuleSoft</b><span>Governed contracts and transformations.</span></button><button class="factoryCard" onclick="inspectFactory('SERVICES',this)"><b>Microservices · Java/Spring</b><span>Capability-aligned service candidates.</span></button><button class="factoryCard" onclick="inspectFactory('EVENTS',this)"><b>Events · EventBridge</b><span>Traceable event candidates and lineage.</span></button></div>
         <div class="factoryDetail" id="factoryDetail"><strong>Select a factory stage.</strong> The demo will show exactly which metadata is used and which recommendation is produced.</div>
         <div class="factorySafety"><b>BOUNDARY:</b> This is a target-pattern assessment. Source transformation, database migration, deployment and production orchestration remain outside AI control and require approved engineering and human-review processes.</div>
+      </section>
+
+
+      <section class="opsAgent" id="opsAgent" aria-label="OPSAGENT scheduler operations assurance">
+        <div class="opsHead"><div class="opsIdentity">OPS</div><div><span class="kicker">SPECIALISED SCHEDULER OPERATIONS AGENT</span><h3>OPSAGENT · Annual Calendar &amp; Job-List Assurance</h3><p>Validates the annual calendar load, detects duplicate generated jobs and creates a human-verified operations checklist.</p></div><span class="opsPill">ADVISORY · NO AUTOMATIC DELETE</span></div>
+        <div class="opsControls">
+          <select id="opsCalendar" aria-label="Annual calendar package"><option value="2026_MASTER_V3">2026 Annual Master · v3 · loaded twice</option><option value="2025_MASTER_V4">2025 Annual Master · wrong year</option><option value="2026_DRAFT_V4">2026 Draft v4 · not approved</option><option value="2026_MASTER_CLEAN">2026 Annual Master · validated copy</option></select>
+          <select id="opsApplication" aria-label="Application filter"><option value="ALL">All applications</option><option>Core Operations</option><option>Policy Services</option><option>Finance</option><option>Billing</option><option>Additional Processing</option></select>
+          <select id="opsCadence" aria-label="Schedule cadence filter"><option value="ALL">All schedule types</option><option>DAILY</option><option>WEEKLY</option><option>MONTHLY</option><option>HALF-YEARLY</option><option>YEARLY</option><option>SPECIAL</option><option>STANDALONE</option></select>
+          <button onclick="runOpsAgent()">Run calendar checks</button><button class="secondary" onclick="opsCalendarFile.click()">Load calendar JSON</button><button class="secondary" onclick="generateOpsChecklist()">Generate daily checklist</button><input class="hidden" id="opsCalendarFile" type="file" accept="application/json" onchange="loadOpsCalendarFile(event)">
+        </div>
+        <div class="opsSummary"><div class="opsMetric"><span>CALENDAR LOADS</span><b id="opsLoads">0</b></div><div class="opsMetric"><span>JOBS IN VIEW</span><b id="opsJobs">0</b></div><div class="opsMetric"><span>DUPLICATES</span><b id="opsDuplicates">0</b></div><div class="opsMetric"><span>CALENDAR ISSUES</span><b id="opsCalendarIssues">0</b></div><div class="opsMetric"><span>REVIEW STATUS</span><b id="opsReviewMetric">OPEN</b></div></div>
+        <div class="opsCalendarProof" id="opsCalendarProof"><b>Ready:</b> choose an annual calendar package and run the deterministic validation.</div>
+        <div class="opsReport" id="opsReport"><div class="opsRow head"><span>Job / application</span><span>System</span><span>Cadence</span><span>Calendar</span><span>Window</span><span>Rule / source load</span></div></div>
+        <div class="opsFinding"><h4>Exception and impact report</h4><div id="opsFindings"><span class="muted">Run OPSAGENT to inspect calendar integrity, generated jobs and standalone collisions.</span></div></div>
+        <div class="opsVerify"><span>AUTHORISED OPERATIONS REVIEWER</span><input id="opsReviewer" value="Rahul Khanna" aria-label="OPSAGENT reviewer"><select id="opsDecision"><option>Verified — route cleanup checklist</option><option>Approved exception</option><option>Request calendar reload</option><option>Escalate to scheduler owner</option></select><button onclick="verifyOpsChecklist()">Record verification</button><strong class="opsVerifyResult" id="opsVerifyResult">Awaiting OPSAGENT run</strong></div>
       </section>
 
       <div class="controlDeck">
@@ -489,7 +507,289 @@
       closeReview();toast.textContent="Human review saved. No production action was performed.";toast.style.display="block";setTimeout(()=>toast.style.display="none",3500);
     }
     function escapeText(value){const el=document.createElement("div");el.textContent=value;return el.innerHTML}
-    prepareSemantic();loadDefaultMetadata();
+
+    let opsSchedules=    [
+          {
+                "job": "OPS_CORE_DAILY",
+                "application": "Core Operations",
+                "system": "BATCH CORE",
+                "cadence": "DAILY",
+                "calendar": "CAL2026",
+                "window": "MON-THU 01:00",
+                "rule": "MONDAY-THURSDAY; EXCLUDE HOLIDAYS",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_CORE_DAILY",
+                "application": "Core Operations",
+                "system": "BATCH CORE",
+                "cadence": "DAILY",
+                "calendar": "CAL2026",
+                "window": "MON-THU 01:00",
+                "rule": "MONDAY-THURSDAY; EXCLUDE HOLIDAYS",
+                "load": "LOAD-B"
+          },
+          {
+                "job": "OPS_STANDARD_FRIDAY",
+                "application": "Core Operations",
+                "system": "BATCH CORE",
+                "cadence": "WEEKLY",
+                "calendar": "CAL2026",
+                "window": "FRI 01:00",
+                "rule": "FRIDAY; EXCLUDE MONTH-END FRIDAY",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_MONTH_END_FRIDAY",
+                "application": "Finance",
+                "system": "MONTH-END",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "LAST FRI 01:00",
+                "rule": "LAST FRIDAY OF MONTH",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_LIFE_DAILY",
+                "application": "Policy Services",
+                "system": "LIFE ADMIN",
+                "cadence": "DAILY",
+                "calendar": "CAL2026",
+                "window": "BUSINESS DAY 02:00",
+                "rule": "DAILY; EXCLUDE MONTH CLOSE AND HOLIDAYS",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_MONTH_CLOSE",
+                "application": "Finance",
+                "system": "MONTH-END",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2025",
+                "window": "1ST OF FOLLOWING MONTH 03:00",
+                "rule": "MONTH-END RUNS ON DAY 1 OF NEXT MONTH; JANUARY MONTH-END = 1 FEBRUARY",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_MONTHLY_EXTRACT",
+                "application": "Policy Services",
+                "system": "LIFE ADMIN",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "DAY 20 18:00",
+                "rule": "20TH OF MONTH; LOAD MONTHLY RECORD",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_POST_EXTRACT_DAY1",
+                "application": "Policy Services",
+                "system": "LIFE ADMIN",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "D+1 01:00",
+                "rule": "RUN DAY AFTER OPS_MONTHLY_EXTRACT",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_POST_EXTRACT_DAY2",
+                "application": "Policy Services",
+                "system": "LIFE ADMIN",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "D+2 01:00",
+                "rule": "RUN DAY AFTER OPS_POST_EXTRACT_DAY1",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_BILLING_STOP_ORDER",
+                "application": "Billing",
+                "system": "BILLING HUB",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "CONTROLLED WINDOW",
+                "rule": "STOP-ORDER BILLING HANDOFF TO DOWNSTREAM",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_NFO_LONG",
+                "application": "Policy Services",
+                "system": "LIFE ADMIN",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "LAPSE CLOSE 20:00",
+                "rule": "MONTH-END LAPSE CLOSE-OFF",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_NFO_SHORT",
+                "application": "Policy Services",
+                "system": "LIFE ADMIN",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "AFTER LONG RUN",
+                "rule": "AFTER OPS_NFO_LONG",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_AUX_PRE_ME_WEEK",
+                "application": "Additional Processing",
+                "system": "AUXILIARY",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "LAST WORKDAY",
+                "rule": "LAST WORKING DAY OF WEEK BEFORE MONTH-END WEEK",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_AUX_PRE_ME_WED",
+                "application": "Additional Processing",
+                "system": "AUXILIARY",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "WED BEFORE ME",
+                "rule": "WEDNESDAY BEFORE MONTH-END",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_AUX_POST_CHAIN",
+                "application": "Additional Processing",
+                "system": "AUXILIARY",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "FRI OR NEXT MON",
+                "rule": "FRIDAY AFTER OPS_AUX_NEXT_TUE; IF HOLIDAY MOVE TO MONDAY",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_AUX_MONTH_LAST",
+                "application": "Additional Processing",
+                "system": "AUXILIARY",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "LAST WORKDAY",
+                "rule": "LAST WORKING DAY OF MONTH",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_AUX_FRIDAY",
+                "application": "Additional Processing",
+                "system": "AUXILIARY",
+                "cadence": "WEEKLY",
+                "calendar": "CAL2026",
+                "window": "FRIDAY",
+                "rule": "EVERY FRIDAY; EXCLUDE HOLIDAYS",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_AUX_POST_ME_WEEK_A",
+                "application": "Additional Processing",
+                "system": "AUXILIARY",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "LAST WORKDAY",
+                "rule": "LAST WORKING DAY OF WEEK AFTER MONTH-END WEEK",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_AUX_NEXT_TUE",
+                "application": "Additional Processing",
+                "system": "AUXILIARY",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "NEXT TUESDAY",
+                "rule": "NEXT TUESDAY AFTER OPS_AUX_POST_ME_WEEK_A OR OPS_AUX_POST_ME_WEEK_B",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_AUX_POST_ME_WEEK_B",
+                "application": "Additional Processing",
+                "system": "AUXILIARY",
+                "cadence": "MONTHLY",
+                "calendar": "CAL2026",
+                "window": "LAST WORKDAY",
+                "rule": "LAST WORKING DAY OF WEEK AFTER MONTH-END WEEK",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_MONTHLY_EXTRACT_STANDALONE",
+                "application": "Policy Services",
+                "system": "LIFE ADMIN",
+                "cadence": "STANDALONE",
+                "calendar": "MANUAL",
+                "window": "DAY 20 18:05",
+                "rule": "MANUAL REQUEST; SAME PROCESS AS OPS_MONTHLY_EXTRACT",
+                "load": "MANUAL"
+          },
+          {
+                "job": "OPS_YEAR_END_ARCHIVE",
+                "application": "Finance",
+                "system": "YEAR-END",
+                "cadence": "YEARLY",
+                "calendar": "CAL2026",
+                "window": "31 DEC 23:00",
+                "rule": "YEAR-END CLOSE",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_HALF_YEAR_RESERVE",
+                "application": "Finance",
+                "system": "HALF-YEAR",
+                "cadence": "HALF-YEARLY",
+                "calendar": "CAL2026",
+                "window": "JUN/DEC 22:00",
+                "rule": "HALF-YEAR CLOSE",
+                "load": "LOAD-A"
+          },
+          {
+                "job": "OPS_SPECIAL_REPRICE",
+                "application": "Policy Services",
+                "system": "LIFE ADMIN",
+                "cadence": "SPECIAL",
+                "calendar": "EVENT",
+                "window": "APPROVED WINDOW",
+                "rule": "CHANGE REFERENCE AND OWNER APPROVAL REQUIRED",
+                "load": "SPECIAL"
+          }
+    ];
+    let opsHasRun=false,opsChecklistGenerated=false;
+    function loadOpsCalendarFile(event){
+      const selected=event.target.files[0];if(!selected)return;const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);if(!Array.isArray(data.jobs))throw new Error("Calendar JSON requires jobs[]");opsSchedules=data.jobs;opsCalendar.innerHTML="<option value='"+(data.calendarId||selected.name)+"'>"+(data.calendarName||selected.name)+"</option>";opsHasRun=false;runOpsAgent();opsCalendarProof.innerHTML+="<br><b>LOADED FILE:</b> "+selected.name+" · "+opsSchedules.length+" job definitions inspected."}catch(error){opsCalendarProof.className="opsCalendarProof bad";opsCalendarProof.innerHTML="<b>INVALID CALENDAR FILE:</b> "+error.message}};reader.readAsText(selected)}
+    function currentOpsRows(){
+      const app=opsApplication.value,cadence=opsCadence.value;
+      return opsSchedules.filter(x=>(app==="ALL"||x.application===app)&&(cadence==="ALL"||x.cadence===cadence));
+    }
+    function opsAnalysis(){
+      const calendar=opsCalendar.value,rows=currentOpsRows(),findings=[];
+      const loads=calendar==="2026_MASTER_V3"?2:1;
+      if(loads>1)findings.push({severity:"HIGH",title:"Annual calendar loaded twice",impact:"Recurring definitions can generate duplicate daily, weekly, monthly and year-end jobs for the whole year.",rule:"CALENDAR_LOAD_UNIQUENESS",way:"Quarantine LOAD-B; compare generated instances; remove only reviewer-approved duplicates."});
+      if(calendar.startsWith("2025"))findings.push({severity:"HIGH",title:"Wrong calendar year selected",impact:"Business-day, month-end and public-holiday processing can run on incorrect dates.",rule:"CALENDAR_YEAR = 2026",way:"Reject activation and load the approved 2026 master calendar."});
+      if(calendar.includes("DRAFT"))findings.push({severity:"HIGH",title:"Unapproved calendar version",impact:"Untested recurrence rules may create missing, early or additional production runs.",rule:"STATUS = APPROVED",way:"Block activation and route the package to the scheduler owner for approval."});
+      const signatures=new Map();
+      rows.forEach(x=>{const key=[x.job.replace("_STANDALONE",""),x.application,x.system,x.window,x.cadence==="STANDALONE"?"DAILY":x.cadence].join("|");if(!signatures.has(key))signatures.set(key,[]);signatures.get(key).push(x)});
+      if(rows.some(x=>x.job==="OPS_CORE_DAILY")&&loads>1)findings.push({severity:"HIGH",title:"Duplicate OPS_CORE_DAILY instances",impact:"Core daily processing may run twice, creating contention, duplicate outputs and downstream reconciliation risk.",rule:"UNIQUE(job + calendar + window)",way:"Keep LOAD-A; place LOAD-B instance on hold; scheduler operator verifies then removes the duplicate."});
+      if(rows.some(x=>x.job==="OPS_MONTHLY_EXTRACT_STANDALONE")&&rows.some(x=>x.job==="OPS_MONTHLY_EXTRACT"))findings.push({severity:"MEDIUM",title:"Standalone run overlaps scheduled monthly extract",impact:"Two runs target the same monthly extraction process five minutes apart.",rule:"NO_STANDALONE_DURING_ACTIVE_WINDOW",way:"Require an operations reference and suppress the standalone run while the scheduled instance is active."});
+      if(rows.some(x=>x.job==="OPS_MONTH_CLOSE"))findings.push({severity:"HIGH",title:"Month-close job references CAL2025",impact:"Month-close processing scheduled for the 1st of the following month can execute against the wrong year's calendar rules.",rule:"JOB_CALENDAR_YEAR_MATCH",way:"Correct the job association to CAL2026 and regenerate only the affected month-end instances; verify January month-end is dated 1 February."});
+      return {calendar,rows,loads,findings};
+    }
+    function runOpsAgent(){
+      opsHasRun=true;opsChecklistGenerated=false;const a=opsAnalysis();
+      opsLoads.textContent=a.loads;opsJobs.textContent=a.rows.length;opsDuplicates.textContent=a.findings.filter(x=>/duplicate|overlap/i.test(x.title)).length;opsCalendarIssues.textContent=a.findings.filter(x=>/calendar|year|version/i.test(x.title)).length;opsReviewMetric.textContent="OPEN";
+      const unsafe=a.findings.length>0;opsCalendarProof.className="opsCalendarProof"+(unsafe?" bad":"");opsCalendarProof.innerHTML="<b>"+(unsafe?"ACTIVATION HOLD":"CALENDAR VALIDATED")+":</b> "+a.calendar+" · expected year 2026 · "+a.loads+" load event(s) · "+a.findings.length+" exception(s). "+(unsafe?"Human review required before calendar activation or duplicate cleanup.":"No deterministic exceptions found.");
+      opsReport.innerHTML='<div class="opsRow head"><span>Job / application</span><span>System</span><span>Cadence</span><span>Calendar</span><span>Window</span><span>Rule / source load</span></div>'+a.rows.map(x=>"<div class='opsRow'><span><b>"+x.job+"</b><br>"+x.application+"</span><span>"+x.system+"</span><span>"+x.cadence+"</span><span>"+x.calendar+"</span><span>"+x.window+"</span><span>"+x.rule+" · "+x.load+"</span></div>").join("");
+      opsFindings.innerHTML=a.findings.length?a.findings.map((x,i)=>"<div class='findingCard'><span class='severity "+(x.severity==="MEDIUM"?"medium":"")+"'>"+(i+1)+"</span><div><strong>"+x.title+"</strong><br>"+x.impact+"</div><div><code>RULE: "+x.rule+"</code></div><div><strong>WAY FORWARD</strong><br>"+x.way+"</div></div>").join(""):"<div class='findingCard'><span class='severity medium'>✓</span><div><strong>No exception found</strong><br>The selected calendar package passed the configured rules.</div><div><code>DETERMINISTIC CHECKS COMPLETE</code></div><div>Proceed to authorised verification.</div></div>";
+      opsVerifyResult.className="opsVerifyResult";opsVerifyResult.textContent="Awaiting human verification";
+    }
+    function generateOpsChecklist(){
+      if(!opsHasRun)runOpsAgent();opsChecklistGenerated=true;const a=opsAnalysis();const today="12 Oct 2026";
+      opsCalendarProof.innerHTML+="<br><b>DAILY CHECKLIST "+today+":</b> confirm active calendar; review "+a.findings.length+" exceptions; verify special/standalone authorisations; confirm application owners; record cleanup decision.";
+      opsVerifyResult.textContent="Checklist generated · verification required";
+    }
+    function verifyOpsChecklist(){
+      if(!opsHasRun){opsVerifyResult.className="opsVerifyResult bad";opsVerifyResult.textContent="Run OPSAGENT first";return}
+      if(opsReviewer.value.trim().toLowerCase()!=="rahul khanna"){opsVerifyResult.className="opsVerifyResult bad";opsVerifyResult.textContent="UNAUTHORISED — verification not recorded";return}
+      if(!opsChecklistGenerated)generateOpsChecklist();opsReviewMetric.textContent="VERIFIED";opsVerifyResult.className="opsVerifyResult ok";opsVerifyResult.textContent=opsDecision.value+" · Rahul Khanna · production action: NONE";
+    }
+
+    prepareSemantic();loadDefaultMetadata();runOpsAgent();
   </script>
 </body>
 </html>

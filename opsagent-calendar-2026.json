@@ -1,0 +1,264 @@
+{
+  "calendarId": "2026_MASTER_SAMPLE",
+  "calendarName": "Synthetic 2026 Annual Scheduler Calendar",
+  "year": 2026,
+  "status": "APPROVED",
+  "privacyNote": "All job names are fictional. Scheduling patterns are representative examples only.",
+  "loads": [
+    {
+      "id": "LOAD-A",
+      "loadedAt": "2025-12-15T08:10:00+02:00"
+    },
+    {
+      "id": "LOAD-B",
+      "loadedAt": "2025-12-15T08:16:00+02:00"
+    }
+  ],
+  "jobs": [
+    {
+      "job": "OPS_CORE_DAILY",
+      "application": "Core Operations",
+      "system": "BATCH CORE",
+      "cadence": "DAILY",
+      "calendar": "CAL2026",
+      "window": "MON-THU 01:00",
+      "rule": "MONDAY-THURSDAY; EXCLUDE HOLIDAYS",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_CORE_DAILY",
+      "application": "Core Operations",
+      "system": "BATCH CORE",
+      "cadence": "DAILY",
+      "calendar": "CAL2026",
+      "window": "MON-THU 01:00",
+      "rule": "MONDAY-THURSDAY; EXCLUDE HOLIDAYS",
+      "load": "LOAD-B"
+    },
+    {
+      "job": "OPS_STANDARD_FRIDAY",
+      "application": "Core Operations",
+      "system": "BATCH CORE",
+      "cadence": "WEEKLY",
+      "calendar": "CAL2026",
+      "window": "FRI 01:00",
+      "rule": "FRIDAY; EXCLUDE MONTH-END FRIDAY",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_MONTH_END_FRIDAY",
+      "application": "Finance",
+      "system": "MONTH-END",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "LAST FRI 01:00",
+      "rule": "LAST FRIDAY OF MONTH",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_LIFE_DAILY",
+      "application": "Policy Services",
+      "system": "LIFE ADMIN",
+      "cadence": "DAILY",
+      "calendar": "CAL2026",
+      "window": "BUSINESS DAY 02:00",
+      "rule": "DAILY; EXCLUDE MONTH CLOSE AND HOLIDAYS",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_MONTH_CLOSE",
+      "application": "Finance",
+      "system": "MONTH-END",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2025",
+      "window": "1ST OF FOLLOWING MONTH 03:00",
+      "rule": "MONTH-END RUNS ON DAY 1 OF NEXT MONTH; JANUARY MONTH-END = 1 FEBRUARY",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_MONTHLY_EXTRACT",
+      "application": "Policy Services",
+      "system": "LIFE ADMIN",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "DAY 20 18:00",
+      "rule": "20TH OF MONTH; LOAD MONTHLY RECORD",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_POST_EXTRACT_DAY1",
+      "application": "Policy Services",
+      "system": "LIFE ADMIN",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "D+1 01:00",
+      "rule": "RUN DAY AFTER OPS_MONTHLY_EXTRACT",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_POST_EXTRACT_DAY2",
+      "application": "Policy Services",
+      "system": "LIFE ADMIN",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "D+2 01:00",
+      "rule": "RUN DAY AFTER OPS_POST_EXTRACT_DAY1",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_BILLING_STOP_ORDER",
+      "application": "Billing",
+      "system": "BILLING HUB",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "CONTROLLED WINDOW",
+      "rule": "STOP-ORDER BILLING HANDOFF TO DOWNSTREAM",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_NFO_LONG",
+      "application": "Policy Services",
+      "system": "LIFE ADMIN",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "LAPSE CLOSE 20:00",
+      "rule": "MONTH-END LAPSE CLOSE-OFF",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_NFO_SHORT",
+      "application": "Policy Services",
+      "system": "LIFE ADMIN",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "AFTER LONG RUN",
+      "rule": "AFTER OPS_NFO_LONG",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_AUX_PRE_ME_WEEK",
+      "application": "Additional Processing",
+      "system": "AUXILIARY",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "LAST WORKDAY",
+      "rule": "LAST WORKING DAY OF WEEK BEFORE MONTH-END WEEK",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_AUX_PRE_ME_WED",
+      "application": "Additional Processing",
+      "system": "AUXILIARY",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "WED BEFORE ME",
+      "rule": "WEDNESDAY BEFORE MONTH-END",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_AUX_POST_CHAIN",
+      "application": "Additional Processing",
+      "system": "AUXILIARY",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "FRI OR NEXT MON",
+      "rule": "FRIDAY AFTER OPS_AUX_NEXT_TUE; IF HOLIDAY MOVE TO MONDAY",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_AUX_MONTH_LAST",
+      "application": "Additional Processing",
+      "system": "AUXILIARY",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "LAST WORKDAY",
+      "rule": "LAST WORKING DAY OF MONTH",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_AUX_FRIDAY",
+      "application": "Additional Processing",
+      "system": "AUXILIARY",
+      "cadence": "WEEKLY",
+      "calendar": "CAL2026",
+      "window": "FRIDAY",
+      "rule": "EVERY FRIDAY; EXCLUDE HOLIDAYS",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_AUX_POST_ME_WEEK_A",
+      "application": "Additional Processing",
+      "system": "AUXILIARY",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "LAST WORKDAY",
+      "rule": "LAST WORKING DAY OF WEEK AFTER MONTH-END WEEK",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_AUX_NEXT_TUE",
+      "application": "Additional Processing",
+      "system": "AUXILIARY",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "NEXT TUESDAY",
+      "rule": "NEXT TUESDAY AFTER OPS_AUX_POST_ME_WEEK_A OR OPS_AUX_POST_ME_WEEK_B",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_AUX_POST_ME_WEEK_B",
+      "application": "Additional Processing",
+      "system": "AUXILIARY",
+      "cadence": "MONTHLY",
+      "calendar": "CAL2026",
+      "window": "LAST WORKDAY",
+      "rule": "LAST WORKING DAY OF WEEK AFTER MONTH-END WEEK",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_MONTHLY_EXTRACT_STANDALONE",
+      "application": "Policy Services",
+      "system": "LIFE ADMIN",
+      "cadence": "STANDALONE",
+      "calendar": "MANUAL",
+      "window": "DAY 20 18:05",
+      "rule": "MANUAL REQUEST; SAME PROCESS AS OPS_MONTHLY_EXTRACT",
+      "load": "MANUAL"
+    },
+    {
+      "job": "OPS_YEAR_END_ARCHIVE",
+      "application": "Finance",
+      "system": "YEAR-END",
+      "cadence": "YEARLY",
+      "calendar": "CAL2026",
+      "window": "31 DEC 23:00",
+      "rule": "YEAR-END CLOSE",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_HALF_YEAR_RESERVE",
+      "application": "Finance",
+      "system": "HALF-YEAR",
+      "cadence": "HALF-YEARLY",
+      "calendar": "CAL2026",
+      "window": "JUN/DEC 22:00",
+      "rule": "HALF-YEAR CLOSE",
+      "load": "LOAD-A"
+    },
+    {
+      "job": "OPS_SPECIAL_REPRICE",
+      "application": "Policy Services",
+      "system": "LIFE ADMIN",
+      "cadence": "SPECIAL",
+      "calendar": "EVENT",
+      "window": "APPROVED WINDOW",
+      "rule": "CHANGE REFERENCE AND OWNER APPROVAL REQUIRED",
+      "load": "SPECIAL"
+    }
+  ],
+  "monthEndConvention": {
+    "definition": "Month-end processing runs on the first calendar day of the following month",
+    "example": "January 2026 month-end runs on 1 February 2026",
+    "ruleId": "MONTH_END_NEXT_MONTH_DAY_1"
+  }
+}
